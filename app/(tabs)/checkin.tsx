@@ -88,7 +88,7 @@ export default function DailyCheckInScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, paddingTop: 70, backgroundColor: "#FFFFFF" },
+  container: { flex: 1, padding: 20, paddingTop: 70, backgroundColor: "#F9F7F0" },
   title: { fontSize: 22, fontWeight: "bold", marginBottom: 10, textAlign: "center" },
   subtitle: { fontSize: 18, marginBottom: 20, textAlign: "center" },
   progressBarContainer: { height: 6, width: "100%", backgroundColor: "#E0E0E0", borderRadius: 3, marginBottom: 20 },

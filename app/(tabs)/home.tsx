@@ -103,7 +103,7 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { padding: 20, paddingTop: 70, backgroundColor: '#FFFFFF', flex: 1 },
+  container: { padding: 20, paddingTop: 70, backgroundColor: '#F9F7F0', flex: 1 },
   greeting: { fontSize: 24, fontWeight: 'bold' },
   userName: { fontSize: 24, color: '#FFA500' },
   sectionTitle: { fontSize: 18, fontWeight: 'bold', marginVertical: 10 },

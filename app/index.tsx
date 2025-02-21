@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Animated, StyleSheet, View, Text, Image} from 'react-native';
 import { useRouter } from 'expo-router';
+import { Typography } from '@/constants/Typography';
 
 export default function SplashScreen() {
   const scaleAnim = useRef(new Animated.Value(1)).current; // Initial scale of 1
@@ -51,16 +52,17 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#FFFFFF', // Background color for splash screen
+    backgroundColor: '#F9F7F0',
   },
   icon: {
     fontSize: 100, // Adjust icon size as needed
     color: '#FFA500', // Icon color
   },
   text: {
-    fontSize: 18,
-    color: '#000',
+    color: '#333333',
     marginTop: 20,
+    fontSize: Typography.fontSize.largest,
+    fontWeight: '500',
   },
   logo: {
     width: 300,
@@ -68,6 +70,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   highlight: {
-    color: '#FFA500', // Orange color for 'ebb'
+    color: '#FFAE00', // Orange color for 'ebb'
   },
 });

@@ -104,7 +104,7 @@ export default function ChatScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#FFFFFF" },
+  container: { flex: 1, backgroundColor: "#F9F7F0" },
   header: { flexDirection: "row", alignItems: "center", padding: 15, backgroundColor: "#FAE1C0" },
   backButton: { /* styles for back button */ },
   backText: { fontSize: 18 },
