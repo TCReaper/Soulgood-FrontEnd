@@ -5,7 +5,7 @@ import { Typography } from '@/constants/Typography';
 import BackIcon from '@/assets/icons/Back.svg';
 import ChatIcon from '@/assets/icons/chat/chat.svg';
 import SoulyIcon from '@/assets/icons/chat/souly.svg';
-import SendIcon from '@/assets/icons/chat/send.svg'; // Import the Send Button SVG
+import SendIcon from '@/assets/icons/chat/send.svg';
 
 export default function ChatScreen() {
   const router = useRouter();
