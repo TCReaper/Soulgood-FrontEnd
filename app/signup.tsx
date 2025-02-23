@@ -1,17 +1,58 @@
 import React from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { Typography } from '@/constants/Typography';
+import UsernameIcon from '@/assets/icons/Username.svg';
+import EmailIcon from '@/assets/icons/Email.svg';
+import PhoneIcon from '@/assets/icons/Phone.svg';
+import PasswordIcon from '@/assets/icons/Password.svg';
+import GoogleIcon from '@/assets/icons/Google.svg';
 
 export default function SignUpScreen() {
   return (
     <View style={styles.container}>
-      <Image source={require('@/assets/images/soulgood-light.png')} style={styles.logo} />
+
       <Text style={styles.title}>Sign Up</Text>
       
-      <TextInput placeholder="Username" style={styles.input} />
-      <TextInput placeholder="Email" style={styles.input} />
-      <TextInput placeholder="Phone" style={styles.input} />
-      <TextInput placeholder="Password" style={styles.input} secureTextEntry />
-      <TextInput placeholder="Confirm Password" style={styles.input} secureTextEntry />
+      <View style = {styles.inputContainer}>
+        <UsernameIcon width = {24} height = {24} style = {styles.icon} />
+        <TextInput
+          placeholder= 'Username'
+          style = {styles.input}
+          placeholderTextColor = '#B5B5B5'
+        />
+      </View>
+      <View style = {styles.inputContainer}>
+        <EmailIcon width = {24} height = {24} style = {styles.icon} />
+        <TextInput
+          placeholder= 'Email'
+          style = {styles.input}
+          placeholderTextColor = '#B5B5B5'
+        />
+      </View>
+      <View style = {styles.inputContainer}>
+        <PhoneIcon width = {24} height = {24} style = {styles.icon} />
+        <TextInput
+          placeholder= 'Phone'
+          style = {styles.input}
+          placeholderTextColor = '#B5B5B5'
+        />
+      </View>
+      <View style = {styles.inputContainer}>
+        <PasswordIcon width = {24} height = {24} style = {styles.icon} />
+        <TextInput
+          placeholder= 'Password'
+          style = {styles.input}
+          placeholderTextColor = '#B5B5B5'
+        />
+      </View>
+      <View style = {styles.inputContainer}>
+        <PasswordIcon width = {24} height = {24} style = {styles.icon} />
+        <TextInput
+          placeholder= 'Confirm Password'
+          style = {styles.input}
+          placeholderTextColor = '#B5B5B5'
+        />
+      </View>
 
       <TouchableOpacity style={styles.createButton}>
         <Text style={styles.createText}>Create</Text>
@@ -20,8 +61,11 @@ export default function SignUpScreen() {
       <Text style={styles.orText}>or sign up with</Text>
 
       <TouchableOpacity style={styles.googleButton}>
+      <View style={styles.googleContainer}>
+        <GoogleIcon width={24} height={24} style={styles.googleicon} />
         <Text style={styles.googleText}>Sign up with Google</Text>
-      </TouchableOpacity>
+      </View>
+    </TouchableOpacity>
     </View>
   );
 }
@@ -31,56 +75,81 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#FFF',
-    paddingHorizontal: 20,
-  },
-  logo: {
-    width: 300,
-    height: 100,
-    marginBottom: 20,
+    backgroundColor: '#F9F7F0',
+    paddingHorizontal: 50,
   },
   title: {
-    fontSize: 24,
+    fontSize: Typography.fontSize.largest,
+    fontWeight: '500',
+    color: '#333333',
     marginBottom: 20,
   },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#EDEDED',
+    borderRadius: 30,
+    marginBottom:20,
+    width: '90%', 
+    height:60,
+  },
+  icon: {
+    marginLeft:20,
+    marginRight:20,
+  },
+  googleicon: {
+    marginRight:15,
+  },
   input: {
-    width: '100%',
-    height: 50,
-    borderWidth: 1,
-    borderColor: '#DDD',
-    borderRadius: 5,
-    paddingHorizontal: 10,
-    marginBottom: 15,
+    // flex: 1,
+    width: '90%',
+    height: 60,
+    borderRadius: 30,
+    paddingHorizontal: 20,
+    backgroundColor:'#EDEDED',
+    fontSize: Typography.fontSize.small,
+    fontWeight: '600',
   },
   createButton: {
-    width: '100%',
-    height: 50,
+    width: '90%',
+    height: 60,
+    borderRadius: 30,
     backgroundColor: '#FFA500',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 5,
     marginBottom: 10,
+    marginTop: 30
   },
   createText: {
     color: '#FFF',
-    fontSize: 18,
+    fontSize: Typography.fontSize.large,
+    fontWeight: '700',
   },
   orText: {
-    fontSize: 14,
-    color: '#888',
+    color: '#B5B5B5',
     marginVertical: 10,
+    fontSize: Typography.fontSize.tiny,
+    fontWeight: '500',
   },
   googleButton: {
-    width: '100%',
-    height: 50,
+    width: '90%',
+    height: 60,
     borderWidth: 1,
     borderColor: '#DDD',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 5,
+    borderRadius: 30, 
+    backgroundColor: '#D9D9D9',
   },
+  
+  googleContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  
   googleText: {
-    color: '#000',
-    fontSize: 18,
+    color: '#585858',
+    fontSize: Typography.fontSize.large,
+    fontWeight: '700',
   },
 });
