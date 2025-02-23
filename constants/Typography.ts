@@ -13,6 +13,7 @@ export const Typography = {
       large: 20,
       larger: 24,
       largest: 32,
+      extra: 60,
     },
   };
   

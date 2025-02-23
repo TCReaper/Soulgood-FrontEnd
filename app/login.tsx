@@ -54,11 +54,11 @@ export default function LoginScreen() {
   {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
       <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-        <Text style={styles.loginText}>LOGIN</Text>
+        <Text style={styles.loginText}>Login</Text>
       </TouchableOpacity>
 
       <View style={styles.forgotPasswordContainer}>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => router.push('/changepassword')}>
         <Text style={styles.forgotPassword}>Forgot password?</Text>
       </TouchableOpacity>
     </View>
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     marginBottom:20,
     width: '90%', 
-    height:60,
+    height: '8%',
   },
   icon: {
     marginLeft:20,
@@ -119,11 +119,11 @@ const styles = StyleSheet.create({
   },
   input: {
     // flex: 1,
-    width: '90%',
-    height: 60,
     borderRadius: 30,
     paddingHorizontal: 20,
     backgroundColor:'#EDEDED',
+    width:'80%',
+    height:'100%',
     fontSize: Typography.fontSize.small,
     fontWeight: '600',
   },
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
   },
   loginButton: {
     width: '90%',
-    height: 60,
+    height: '8%',
     backgroundColor: '#FFAE00',
     justifyContent: 'center',
     alignItems: 'center',
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
   },
   googleButton: {
     width: '90%',
-    height: 60,
+    height: '8%',
     backgroundColor: '#D9D9D9',
     justifyContent: 'center',
     alignItems: 'center',
