@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRouter } from 'expo-router';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { Typography } from '@/constants/Typography';
 import UsernameIcon from '@/assets/icons/Username.svg';
@@ -8,6 +9,13 @@ import PasswordIcon from '@/assets/icons/Password.svg';
 import GoogleIcon from '@/assets/icons/Google.svg';
 
 export default function SignUpScreen() {
+
+  const router = useRouter();
+
+  const handleCreate = () => {
+    router.push('/AvatarIntro'); 
+  };
+
   return (
     <View style={styles.container}>
 
@@ -54,10 +62,6 @@ export default function SignUpScreen() {
         />
       </View>
 
-      <TouchableOpacity style={styles.createButton}>
-        <Text style={styles.createText}>Create</Text>
-      </TouchableOpacity>
-
       <Text style={styles.orText}>or sign up with</Text>
 
       <TouchableOpacity style={styles.googleButton}>
@@ -65,6 +69,10 @@ export default function SignUpScreen() {
         <GoogleIcon width={24} height={24} style={styles.googleicon} />
         <Text style={styles.googleText}>Sign up with Google</Text>
       </View>
+    </TouchableOpacity>
+
+    <TouchableOpacity style={styles.createButton} onPress={handleCreate}>
+    <Text style={styles.createText}>Create</Text>
     </TouchableOpacity>
     </View>
   );
