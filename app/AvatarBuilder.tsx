@@ -277,8 +277,8 @@ const styles = StyleSheet.create({
         fontSize: Typography.fontSize.medium,
         color: '#333333',
         textDecorationLine: 'underline',
-        fontWeight: '500',
-    },
+        fontFamily: Typography.fontFamily.medium,
+      },
     avatarContainer: {
       alignItems: 'center',
       marginVertical: 20,
@@ -351,11 +351,11 @@ const styles = StyleSheet.create({
     tabText: {
       fontSize: Typography.fontSize.medium,
       color: '#333333',
-      fontWeight: '500',
+      fontFamily: Typography.fontFamily.medium,
     },
     tabTextActive: {
       color: '#fff',
-      fontWeight: '700',
+      fontFamily: Typography.fontFamily.bold,
       fontSize: Typography.fontSize.medium,
     },
     optionRow: {

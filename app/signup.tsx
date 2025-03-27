@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: Typography.fontSize.largest,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: '#333333',
     marginBottom: 20,
   },
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor:'#EDEDED',
     fontSize: Typography.fontSize.small,
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
   },
   createButton: {
     width: '90%',
@@ -131,13 +131,13 @@ const styles = StyleSheet.create({
   createText: {
     color: '#FFF',
     fontSize: Typography.fontSize.large,
-    fontWeight: '700',
+    fontFamily: Typography.fontFamily.bold,
   },
   orText: {
     color: '#B5B5B5',
     marginVertical: 10,
     fontSize: Typography.fontSize.tiny,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
   },
   googleButton: {
     width: '90%',
@@ -158,6 +158,6 @@ const styles = StyleSheet.create({
   googleText: {
     color: '#585858',
     fontSize: Typography.fontSize.large,
-    fontWeight: '700',
+    fontFamily: Typography.fontFamily.bold,
   },
 });

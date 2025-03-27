@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   },
   welcome: {
     fontSize: Typography.fontSize.largest,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: '#333333',
     marginBottom: 20,
   },
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor: '#EDEDED',
     fontSize: Typography.fontSize.small,
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
   },
   errorText: {
     color: 'red',
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
   loginText: {
     color: '#FFF',
     fontSize: Typography.fontSize.large,
-    fontWeight: '700',
+    fontFamily: Typography.fontFamily.bold,
   },
   backButton: {
     alignSelf: 'flex-start', 
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
   backText: {
     color: '#333333',
     fontSize: Typography.fontSize.small,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     textDecorationLine: 'underline',
   },
 });
