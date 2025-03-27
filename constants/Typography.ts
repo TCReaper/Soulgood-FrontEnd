@@ -1,9 +1,10 @@
 export const Typography = {
     fontFamily: {
-      regular: 'Inter-Regular',
-      bold: 'Inter-Bold',
-      medium: 'Inter-Medium',
-      semibold: 'Inter-SemiBold',
+      regular: 'Figtree-Regular',
+      bold: 'Figtree-Bold',
+      medium: 'Figtree-Medium',
+      semibold: 'Figtree-SemiBold',
+      extrabold: 'Figtree-ExtraBold',
     },
     fontSize: {
       tiny: 10,

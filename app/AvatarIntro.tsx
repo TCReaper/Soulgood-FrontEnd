@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
 
     title: {
       fontSize: Typography.fontSize.largest,
-      fontWeight: '500',
+      fontFamily: Typography.fontFamily.medium,
       color: '#333333',
       marginBottom: 40,
     },
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     buttonText: {
       color: '#FFF',
       fontSize: Typography.fontSize.large,
-      fontWeight: '700',
+      fontFamily: Typography.fontFamily.bold,
     },
   });
   

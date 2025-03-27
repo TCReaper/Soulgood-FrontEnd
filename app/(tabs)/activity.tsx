@@ -88,12 +88,12 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 20,
     paddingBottom: 10,
-    backgroundColor: "#FAF0D9",
-    elevation: 5,
+    backgroundColor: "#F9F7F0", 
+    elevation: 5, 
     shadowColor: "#000",
     shadowOpacity: 0.2,
     shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 4,
+    shadowRadius: 1,
   },
   goBackButton: {
     padding: 10,
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: Typography.fontSize.larger,
-    fontWeight: "500",
+    fontFamily: Typography.fontFamily.bold,
     color: "#333333",
     flex: 1,
     textAlign: "center",
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: Typography.fontSize.larger,
-    fontWeight: "600",
+    fontFamily: Typography.fontFamily.semibold,
     marginBottom: 20,
   },
   activityCard: {
@@ -123,11 +123,11 @@ const styles = StyleSheet.create({
   },
   activityText: {
     fontSize: Typography.fontSize.small,
-    fontWeight: '400',
+    fontFamily: Typography.fontFamily.regular,
   },
   activityHighlight: {
     fontSize: Typography.fontSize.extra,
-    fontWeight: '800',
+    fontFamily: Typography.fontFamily.extrabold,
     color: '#C72323',
   },
   activitySubtext: {
@@ -156,12 +156,12 @@ const styles = StyleSheet.create({
   },
   confirmText: {
     fontSize: Typography.fontSize.larger,
-    fontWeight: "600",
+    fontFamily: Typography.fontFamily.semibold,
     marginTop: 20,
   },
   confirmSubtext: {
     fontSize: Typography.fontSize.large,
-    fontWeight: "400",    
+    fontFamily: Typography.fontFamily.regular,
     marginBottom: 20,
     textAlign: 'center',
     marginTop: 10,
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
   confirmButtonText: {
     color: '#FFF',
     fontSize: Typography.fontSize.large,
-    fontWeight: "700", 
+    fontFamily: Typography.fontFamily.bold,
     textAlign: "center",
   },
   cancelButton: {
@@ -199,7 +199,7 @@ const styles = StyleSheet.create({
   cancelText: {
     color: '#333333',
     fontSize: Typography.fontSize.large,
-    fontWeight: "700", 
+    fontFamily: Typography.fontFamily.bold,
     textAlign: "center",
   },
 });

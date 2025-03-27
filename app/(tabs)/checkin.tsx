@@ -146,12 +146,12 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 20, 
     paddingBottom: 10, // Pushes content further down
-    backgroundColor: "#FAF0D9", 
+    backgroundColor: "#F9F7F0", 
     elevation: 5, 
     shadowColor: "#000",
     shadowOpacity: 0.2,
     shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 4,
+    shadowRadius: 1,
   },
 
     goBackButton: {
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
 
     title: {
       fontSize: Typography.fontSize.larger,
-      fontWeight: "500",
+      fontFamily: Typography.fontFamily.bold,
       color: "#333333",
       flex: 1,
       textAlign: "center",
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
 
   subtitle: { 
     fontSize: Typography.fontSize.medium,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     marginBottom: 20, 
     textAlign: 'left',
 
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
 
   optionText: { 
     fontSize: Typography.fontSize.medium,
-    fontWeight: '400',
+    fontFamily: Typography.fontFamily.regular,
     textAlign: "center" 
   },
 
@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
 
   selectedOptionText: { 
     color: "#FFFFFF", // Change text color when selected
-    fontWeight: "bold",
+    fontFamily: Typography.fontFamily.bold,
   },
 
   buttonContainer: { 
@@ -247,7 +247,7 @@ const styles = StyleSheet.create({
   backButtonText: { 
     color: "#FFA500", 
     fontSize: Typography.fontSize.large,
-    fontWeight: '700',
+    fontFamily: Typography.fontFamily.bold,
   },
 
   nextButton: {
@@ -268,7 +268,7 @@ const styles = StyleSheet.create({
   nextButtonText: { 
     color: "#FFFFFF", 
     fontSize: Typography.fontSize.large,
-    fontWeight: '700',
+    fontFamily: Typography.fontFamily.bold,
   },
   
   buttonWrapper: {
@@ -297,13 +297,13 @@ const styles = StyleSheet.create({
 
   confirmText: {
     fontSize: Typography.fontSize.larger,
-    fontWeight: "600",
+    fontFamily: Typography.fontFamily.semibold,
     marginTop: 20,
   },
 
   confirmSubtext: {
     fontSize: Typography.fontSize.large,
-    fontWeight: "400",
+    fontFamily: Typography.fontFamily.regular,
     textAlign: 'center',
     marginTop: 10,
     paddingHorizontal: 20,
@@ -325,7 +325,7 @@ const styles = StyleSheet.create({
   confirmButtonText: {
     color: '#FFF',
     fontSize: Typography.fontSize.large,
-    fontWeight: "700",
+    fontFamily: Typography.fontFamily.bold,
     textAlign: "center",
   },
 
@@ -341,7 +341,7 @@ const styles = StyleSheet.create({
   cancelText: {
     color: '#333333',
     fontSize: Typography.fontSize.large,
-    fontWeight: "700",
+    fontFamily: Typography.fontFamily.bold,
   },
 
 });

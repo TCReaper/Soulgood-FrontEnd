@@ -15,7 +15,7 @@ export default function HomeScreen() {
   const router = useRouter();
   const [activeIndex, setActiveIndex] = useState(0);
   const flatListRef = useRef<FlatList>(null);
-
+  const [showUserMenu, setShowUserMenu] = useState(false);
   const progressSlides = [
     {
       title: "Your average heart rate has been",
@@ -57,69 +57,103 @@ export default function HomeScreen() {
   ];
 
   return (
-    <ScrollView style={styles.container}>
-    <View style={styles.greetingContainer}>
-      <Text style={styles.greeting}>Good Morning!</Text>
-      <UserIcon width={30} height={30} style={styles.userIcon} />
-    </View>
-    <Text style={styles.userName}>John</Text>
-
-      {/* Carousel for Progress Section */}
-      <Text style={styles.sectionTitle}>Progress for the week</Text>
-      <FlatList
-        data={progressSlides}
-        renderItem={renderSlide}
-        keyExtractor={(item, index) => index.toString()}
-        horizontal
-        pagingEnabled
-        showsHorizontalScrollIndicator={false}
-        ref={flatListRef}
-        onScroll={handleScroll}
-        style={styles.carousel}
-        contentContainerStyle={styles.listContainer}
-      />
-      <View style={styles.pagination}>
-        {progressSlides.map((_, index) => (
-          <View
-            key={index}
-            style={[
-              styles.paginationDot,
-              activeIndex === index && styles.activePaginationDot,
-            ]}
-          />
-        ))}
-      </View>
-
-      {/* Pending Task Section */}
-      <Text style={styles.sectionTitle}>Pending Task</Text>
-      <TouchableOpacity style={styles.taskCard} onPress={() => router.replace('/checkin')}>
-        <View style={styles.taskContent}>
-          <ExclamationIcon width={24} height={24} style={styles.taskIcon} />
-          <Text style={styles.taskText}>
-            You’ve got a task waiting for you. {"\n"} 
-            <Text style={styles.taskHighlight}>Tap to finish it!</Text>
-          </Text>
-        </View>
-      </TouchableOpacity>
-
-      {/* For You Section */}
-      <Text style={styles.sectionTitle}>For you</Text>
-      <FlatList
-        data={articleData}
-        horizontal
-        renderItem={({ item }) => (
-          <View style={styles.articleCard}>
-            <Text style={styles.articleTitle}>{item.title}</Text>
-            <View style={styles.articleIconContainer}>
-              {item.icon}
+    <View style={{ flex: 1 }}>
+      {showUserMenu && (
+        <TouchableOpacity
+          style={styles.overlay}
+          activeOpacity={1}
+          onPressOut={() => setShowUserMenu(false)}
+        >
+          <View style={styles.dropdownWrapper}>
+            <View style={styles.menuContainer}>
+              <TouchableOpacity
+                style={styles.menuButton}
+                onPress={() => {
+                  setShowUserMenu(false);
+                  router.push('/AvatarBuilder');
+                }}
+              >
+                <Text style={styles.menuButtonText}>Change Avatar</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.menuButton}
+                onPress={() => {
+                  setShowUserMenu(false);
+                  router.replace('/');
+                }}
+              >
+                <Text style={styles.menuButtonText}>Logout</Text>
+              </TouchableOpacity>
             </View>
           </View>
-        )}
-        keyExtractor={(item) => item.id}
-        showsHorizontalScrollIndicator={false}
-      />
-
-    </ScrollView>
+        </TouchableOpacity>
+      )}
+  
+      <ScrollView style={styles.container}>
+        <View style={styles.greetingContainer}>
+          <Text style={styles.greeting}>Good Morning!</Text>
+          <TouchableOpacity onPress={() => setShowUserMenu(true)}>
+            <UserIcon width={30} height={30} style={styles.userIcon} />
+          </TouchableOpacity>
+        </View>
+        <Text style={styles.userName}>John</Text>
+  
+        {/* Carousel */}
+        <Text style={styles.sectionTitle}>Progress for the week</Text>
+        <FlatList
+          data={progressSlides}
+          renderItem={renderSlide}
+          keyExtractor={(item, index) => index.toString()}
+          horizontal
+          pagingEnabled
+          showsHorizontalScrollIndicator={false}
+          ref={flatListRef}
+          onScroll={handleScroll}
+          style={styles.carousel}
+          contentContainerStyle={styles.listContainer}
+        />
+        <View style={styles.pagination}>
+          {progressSlides.map((_, index) => (
+            <View
+              key={index}
+              style={[
+                styles.paginationDot,
+                activeIndex === index && styles.activePaginationDot,
+              ]}
+            />
+          ))}
+        </View>
+  
+        {/* Task Section */}
+        <Text style={styles.sectionTitle}>Pending Task</Text>
+        <TouchableOpacity style={styles.taskCard} onPress={() => router.replace('/checkin')}>
+          <View style={styles.taskContent}>
+            <ExclamationIcon width={24} height={24} style={styles.taskIcon} />
+            <Text style={styles.taskText}>
+              You’ve got a task waiting for you. {'\n'}
+              <Text style={styles.taskHighlight}>Tap to finish it!</Text>
+            </Text>
+          </View>
+        </TouchableOpacity>
+  
+        {/* For You */}
+        <Text style={styles.sectionTitle}>For you</Text>
+        <FlatList
+          data={articleData}
+          horizontal
+          renderItem={({ item }) => (
+            <View style={styles.articleCard}>
+              <Text style={styles.articleTitle}>{item.title}</Text>
+              <View style={styles.articleIconContainer}>
+                {item.icon}
+              </View>
+            </View>
+          )}
+          keyExtractor={(item) => item.id}
+          showsHorizontalScrollIndicator={false}
+        />
+      </ScrollView>
+    </View>
   );
 }
 
@@ -134,7 +168,7 @@ const styles = StyleSheet.create({
   greeting: {
     color: '#333333',
     fontSize: Typography.fontSize.larger,
-    fontWeight: '300',
+    fontFamily: Typography.fontFamily.regular,
   },
   userIcon: {
     width: 30, 
@@ -147,13 +181,13 @@ const styles = StyleSheet.create({
   userName: {
     color: '#333333',
     fontSize: Typography.fontSize.larger,
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.bold,
     marginBottom: 10,
   },  
   sectionTitle: {
     color: '#333333',
     fontSize: Typography.fontSize.larger,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
   },  
   // Carousel styles
   carousel: { 
@@ -176,18 +210,18 @@ const styles = StyleSheet.create({
   slideTitle: {
     color: '#333333',
     fontSize: Typography.fontSize.small,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     marginBottom: 5,
   }, 
   progressValue: {     
     color: '#C72323',
     fontSize: Typography.fontSize.extra,
-    fontWeight: '800'
+    fontFamily: Typography.fontFamily.extrabold,
   },
   slideDescription: { 
     color: '#333333',
     fontSize: Typography.fontSize.small,
-    fontWeight: '800',    
+    fontFamily: Typography.fontFamily.extrabold,
     textAlign: 'center', 
     marginTop: 5, 
   },
@@ -230,12 +264,12 @@ const styles = StyleSheet.create({
 
   taskText: { 
     fontSize: Typography.fontSize.small,
-    fontWeight: '600', 
+    fontFamily: Typography.fontFamily.semibold,
     color: '#fff',
   },
 
   taskHighlight: {
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
     fontSize: Typography.fontSize.small,
   },
 
@@ -253,8 +287,46 @@ const styles = StyleSheet.create({
   
   articleTitle: {
     fontSize: Typography.fontSize.small,
-    fontWeight: '400',
+    fontFamily: Typography.fontFamily.regular,
     textAlign: 'left',
   },
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+    zIndex: 10,
+  },
+  
+  dropdownWrapper: {
+    position: 'absolute',
+    top: 65, // adjust based on paddingTop of screen + icon height
+    right: 20, // align under the UserIcon
+    zIndex: 11,
+  },
+  
+  menuContainer: {
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    elevation: 5,
+  },
+  
+  menuButton: {
+    paddingVertical: 6,
+  },
+  
+  menuButtonText: {
+    fontSize: Typography.fontSize.medium,
+    fontFamily: Typography.fontFamily.medium,
+    color: '#333',
+  },  
   
 });

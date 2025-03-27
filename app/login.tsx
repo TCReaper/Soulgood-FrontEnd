@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   },
   welcome: {
     fontSize: Typography.fontSize.largest,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: '#333333',
     marginBottom: 20,
   },
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     width:'80%',
     height:'100%',
     fontSize: Typography.fontSize.small,
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
   },
   errorText: {
     color: 'red',
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
   loginText: {
     color: '#FFF',
     fontSize: Typography.fontSize.large,
-    fontWeight: '700',
+    fontFamily: Typography.fontFamily.bold,
   },
   forgotPasswordContainer: {
     width: '90%',
@@ -153,12 +153,12 @@ const styles = StyleSheet.create({
   forgotPassword: {
     color: '#8D8D8D',
     fontSize: Typography.fontSize.tiny,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     textDecorationLine: 'underline',
   },
   orText: {
     fontSize: Typography.fontSize.tiny,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: '#8D8D8D',
     marginVertical: 10,
   },
@@ -181,16 +181,15 @@ const styles = StyleSheet.create({
   googleText: {
     color: '#585858',
     fontSize: Typography.fontSize.large,
-    fontWeight: '700',
+    fontFamily: Typography.fontFamily.bold,
   },
   signupText: {
     fontSize: Typography.fontSize.small,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: '#333333',
   },
   signupLink: {
     color: '#FFAE00',
     textDecorationLine: 'underline',
-
   },
 });

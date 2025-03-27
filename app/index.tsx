@@ -49,9 +49,11 @@ export default function SplashScreen() {
           source={require('@/assets/images/soulgood-light.png')}
           style={[styles.logo, { transform: [{ scale: scaleAnim }] }]}
         />
-        <Text style={styles.text}>
-          one <Text style={styles.highlight}>ebb</Text> at a time
-        </Text>
+        <View style={styles.textWrapper}>
+          <Text style={styles.text}>
+            one <Text style={[styles.text, styles.highlight]}>ebb</Text> at a time
+          </Text>
+        </View>
       </Animated.View>
 
       {showButtons && (
@@ -87,11 +89,17 @@ const styles = StyleSheet.create({
     height: 100,
     marginBottom: 10,
   },
+  textWrapper: {
+    maxWidth: '90%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },  
   text: {
     color: '#333333',
     fontSize: Typography.fontSize.largest,
-    fontWeight: '500',
-  },
+    fontFamily: Typography.fontFamily.semibold,
+    textAlign: 'center',
+  },  
   highlight: {
     color: '#FFAE00',
   },
@@ -117,22 +125,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 30,
     marginBottom: 10,
-  },  
+  },
   loginText: {
     color: '#FFF',
     fontSize: Typography.fontSize.large,
-    fontWeight: '700',
+    fontFamily: Typography.fontFamily.bold,
   },
   signupText: {
     color: '#585858',
     fontSize: Typography.fontSize.large,
-    fontWeight: '700',
+    fontFamily: Typography.fontFamily.bold,
   },
   guestText: {
     color: '#FFAE00',
     fontSize: Typography.fontSize.small,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.semibold,
     textDecorationLine: 'underline',
     marginTop: 15,
   },
 });
+
