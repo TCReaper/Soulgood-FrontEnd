@@ -230,6 +230,7 @@ export default function AvatarBuilder() {
         </View>
         </View>
 
+      <View style={styles.bottomSection}>
       {/* Feature Tabs */}
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.tabRow}>
         {featureTabs.map((feature) => (
@@ -246,7 +247,9 @@ export default function AvatarBuilder() {
       </ScrollView>
 
       {/* Options */}
-      {renderOptions()}
+      <View style={styles.optionsWrapper}>
+        {renderOptions()}
+      </View>
 
       {/* Done Button */}
       <TouchableOpacity
@@ -256,6 +259,7 @@ export default function AvatarBuilder() {
       >
         <Text style={styles.doneButtonText}>{isDone ? 'Done!' : 'Done!'}</Text>
       </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -330,10 +334,13 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 0,
         left: 0,
-      },   
+      },        
+      optionsWrapper: {
+        marginBottom: 15,
+      },      
     tabRow: {
       flexDirection: 'row',
-      marginBottom: 20,
+      marginBottom: 15,
     },
     tabButton: {
       marginRight: 15,
@@ -359,7 +366,7 @@ const styles = StyleSheet.create({
       fontSize: Typography.fontSize.medium,
     },
     optionRow: {
-      paddingVertical: 10,
+      paddingVertical: 5,
       paddingHorizontal: 5,
       flexDirection: 'row',
     },
@@ -383,17 +390,17 @@ const styles = StyleSheet.create({
     doneButton: {
       marginTop: 20,
       backgroundColor: '#FFBE31',
-      padding: 15,
+      padding: 20,
       borderRadius: 30,
       alignItems: 'center',
     },
     doneButtonDisabled: {
-      backgroundColor: '#EDEDED',
+      backgroundColor: '#EFEEE7',
     },
     doneButtonText: {
-      color: '#fff',
-      fontWeight: '700',
-      fontSize: 16,
+      color: '#B5B5B5',
+      fontFamily: Typography.fontFamily.bold,
+      fontSize: Typography.fontSize.large,
     },
   });
   

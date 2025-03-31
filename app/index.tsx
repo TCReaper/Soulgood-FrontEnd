@@ -56,19 +56,22 @@ export default function SplashScreen() {
         </View>
       </Animated.View>
 
-      {showButtons && (
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.login} onPress={() => router.push('/login')}>
-            <Text style={styles.loginText}>Login</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.signup} onPress={() => router.push('/signup')}>
-            <Text style={styles.signupText}>Sign Up</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => router.push('/guest')}>
-            <Text style={styles.guestText}>Continue as a Guest</Text>
-          </TouchableOpacity>
-        </View>
-      )}
+      <Animated.View
+        style={[
+          styles.buttonContainer,
+          { opacity: showButtons ? 1 : 0 }
+        ]}
+      >
+        <TouchableOpacity style={styles.login} onPress={() => router.push('/login')}>
+          <Text style={styles.loginText}>Login</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.signup} onPress={() => router.push('/signup')}>
+          <Text style={styles.signupText}>Sign Up</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => router.push('/guest')}>
+          <Text style={styles.guestText}>Continue as a Guest</Text>
+        </TouchableOpacity>
+      </Animated.View>
     </View>
   );
 }
