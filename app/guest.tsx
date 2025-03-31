@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
   },
   welcome: {
     fontSize: Typography.fontSize.largest,
-    fontFamily: Typography.fontFamily.medium,
+    fontFamily: Typography.fontFamily.semibold,
     color: '#333333',
     marginBottom: 20,
   },
