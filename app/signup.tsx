@@ -97,13 +97,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#EDEDED',
     borderRadius: 30,
-    marginBottom: 15,
-    width: '90%',
+    marginBottom:20,
+    width: '90%', 
     height: '8%',
-    paddingHorizontal: 20,
-  },  
+  },
   icon: {
-    marginRight: 15, // optional
+    marginLeft: 20,
+    marginRight: 20, // optional
   },  
   googleicon: {
     marginRight:15,
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 60,
     borderRadius: 30,
-    paddingHorizontal: 0, // can leave or set to 10
+    paddingHorizontal: 10,
     backgroundColor: '#EDEDED',
     fontSize: Typography.fontSize.small,
     fontFamily: Typography.fontFamily.semibold,
