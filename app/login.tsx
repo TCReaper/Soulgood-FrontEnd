@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
   input: {
     // flex: 1,
     borderRadius: 30,
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     backgroundColor:'#EDEDED',
     width:'80%',
     height:'100%',

@@ -4,7 +4,7 @@ import { useRouter } from 'expo-router';
 import Head from '@/assets/avatar/head/Head';
 import { Typography } from '@/constants/Typography';
 import { hairComponents } from '@/assets/avatar/components/avatarComponents';
-import { eyeComponents } from '@/assets/avatar/components/avatarComponents';
+import { eyesComponents } from '@/assets/avatar/components/avatarComponents';
 import { eyebrowsComponents } from '@/assets/avatar/components/avatarComponents';
 import { mouthComponents } from '@/assets/avatar/components/avatarComponents';
 import { othersComponents } from '@/assets/avatar/components/avatarComponents';
@@ -60,63 +60,62 @@ export default function AvatarBuilder() {
         </ScrollView>
       );
     }
-
     if (activeFeature === 'Eyes') {
-        return (
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.optionRow}>
-            {Object.entries(eyeComponents).map(([key, EyeComp]) => {
-              const selected = selections['Eyes'] === key;
-              return (
-                <TouchableOpacity
-                  key={key}
-                  style={[styles.option, selected && styles.optionSelected]}
-                  onPress={() => handleOptionSelect('Eyes', key)}
-                >
-                  {EyeComp ? <EyeComp width={250} height={250} /> : null}
-                </TouchableOpacity>
-              );
-            })}
-          </ScrollView>
-        );
-      }
+      return (
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.optionRow}>
+          {Object.entries(eyesComponents).map(([key, EyesComp]) => {
+            const selected = selections['Eyes'] === key;
+            return (
+              <TouchableOpacity
+                key={key}
+                style={[styles.option, selected && styles.optionSelected]}
+                onPress={() => handleOptionSelect('Eyes', key)}
+              >
+                {EyesComp ? <EyesComp width={150} height={150} /> : null}
+              </TouchableOpacity>
+            );
+          })}
+        </ScrollView>
+      );
+    }  
 
-      if (activeFeature === 'Eyebrows') {
-        return (
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.optionRow}>
-            {Object.entries(eyebrowsComponents).map(([key, EyebrowsComp]) => {
-              const selected = selections['Eyebrows'] === key;
-              return (
-                <TouchableOpacity
-                  key={key}
-                  style={[styles.option, selected && styles.optionSelected]}
-                  onPress={() => handleOptionSelect('Eyebrows', key)}
-                >
-                  {EyebrowsComp ? <EyebrowsComp width={250} height={250} /> : null}
-                </TouchableOpacity>
-              );
-            })}
-          </ScrollView>
-        );
-      }
+    if (activeFeature === 'Eyebrows') {
+      return (
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.optionRow}>
+          {Object.entries(eyebrowsComponents).map(([key, EyebrowsComp]) => {
+            const selected = selections['Eyebrows'] === key;
+            return (
+              <TouchableOpacity
+                key={key}
+                style={[styles.option, selected && styles.optionSelected]}
+                onPress={() => handleOptionSelect('Eyebrows', key)}
+              >
+                {EyebrowsComp ? <EyebrowsComp width={150} height={150} /> : null}
+              </TouchableOpacity>
+            );
+          })}
+        </ScrollView>
+      );
+    } 
 
-      if (activeFeature === 'Mouth') {
-        return (
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.optionRow}>
-            {Object.entries(mouthComponents).map(([key, MouthComp]) => {
-              const selected = selections['Mouth'] === key;
-              return (
-                <TouchableOpacity
-                  key={key}
-                  style={[styles.option, selected && styles.optionSelected]}
-                  onPress={() => handleOptionSelect('Mouth', key)}
-                >
-                  {MouthComp ? <MouthComp width={250} height={250} /> : null}
-                </TouchableOpacity>
-              );
-            })}
-          </ScrollView>
-        );
-      }
+    if (activeFeature === 'Mouth') {
+      return (
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.optionRow}>
+          {Object.entries(mouthComponents).map(([key, MouthComp]) => {
+            const selected = selections['Mouth'] === key;
+            return (
+              <TouchableOpacity
+                key={key}
+                style={[styles.option, selected && styles.optionSelected]}
+                onPress={() => handleOptionSelect('Mouth', key)}
+              >
+                {MouthComp ? <MouthComp width={150} height={150} /> : null}
+              </TouchableOpacity>
+            );
+          })}
+        </ScrollView>
+      );
+    } 
 
       if (activeFeature === 'Others') {
         return (
@@ -148,7 +147,7 @@ export default function AvatarBuilder() {
                 style={[styles.option, selected && styles.optionSelected]}
                 onPress={() => handleOptionSelect('Hair', key)}
               >
-                {HairComp ? <HairComp width={80} height={80} /> : null}
+                {HairComp ? <HairComp width={80} height={80} color={selectedHairColor} /> : null}
               </TouchableOpacity>
             );
           })}
@@ -202,9 +201,10 @@ export default function AvatarBuilder() {
             <Head colorIndex={selectedSkinIndex} />
 
             {selections['Eyes'] && (() => {
-            const EyeComponent = eyeComponents[selections['Eyes']!];
-            return <EyeComponent style={styles.eyeLayer} />;
+            const EyesComponent = eyesComponents[selections['Eyes']!];
+            return <EyesComponent style={styles.eyesLayer} />;
             })()}
+
 
             {selections['Eyebrows'] && (() => {
             const EyebrowsComponent = eyebrowsComponents[selections['Eyebrows']!];
@@ -237,8 +237,15 @@ export default function AvatarBuilder() {
           <TouchableOpacity
             key={feature}
             style={[styles.tabButton, activeFeature === feature && styles.tabButtonActive]}
-            onPress={() => setActiveFeature(feature)}
-          >
+            onPress={() => {
+              setActiveFeature(feature);
+            
+              // Auto-select first hair colour if not selected yet
+              if (feature === 'Hair Colour' && selections['Hair Colour'] === null) {
+                handleOptionSelect('Hair Colour', '0');
+              }
+            }}
+            >
             <Text style={activeFeature === feature ? styles.tabTextActive : styles.tabText}>
               {feature}
             </Text>
@@ -315,7 +322,7 @@ const styles = StyleSheet.create({
         top: 0,
         left: 0,
       },    
-      eyeLayer: {
+      eyesLayer: {
         position: 'absolute',
         top: 0,
         left: 0,

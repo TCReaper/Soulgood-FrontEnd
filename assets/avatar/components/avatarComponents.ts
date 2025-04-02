@@ -40,7 +40,7 @@ import Eyes3 from '@/assets/avatar/eyes/eyes3.svg';
 import Eyes4 from '@/assets/avatar/eyes/eyes4.svg';
 import Eyes5 from '@/assets/avatar/eyes/eyes5.svg';
 
-export const eyeComponents: Record<string, React.FC<any>> = {
+export const eyesComponents: Record<string, React.FC<any>> = {
   'eye_1': Eyes1,
   'eye_2': Eyes2,
   'eye_3': Eyes3,
