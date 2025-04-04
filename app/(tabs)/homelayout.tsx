@@ -3,7 +3,6 @@ import React, { useRef, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, ScrollView, Dimensions } from 'react-native';
 import { Typography } from '@/constants/Typography';
 import ExclamationIcon from '@/assets/icons/Exclamation.svg';
-import UserIcon from '@/assets/icons/User.svg';
 import Article1Icon from '@/assets/icons/article/Article1.svg';
 import Article2Icon from '@/assets/icons/article/Article2.svg';
 import Article3Icon from '@/assets/icons/article/Article3.svg';
@@ -59,7 +58,6 @@ export default function HomeLayout() {
       <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 120 }}>
         <View style={styles.greetingContainer}>
           <Text style={styles.greeting}>Good Morning!</Text>
-          <UserIcon width={30} height={30} style={styles.userIcon} />
         </View>
         <Text style={styles.userName}>John</Text>
   
@@ -125,7 +123,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%',
   },
   greeting: { color: '#333', fontSize: Typography.fontSize.larger, fontFamily: Typography.fontFamily.regular },
-  userIcon: { width: 30, height: 30 },
   userName: { color: '#333', fontSize: Typography.fontSize.larger, fontFamily: Typography.fontFamily.bold, marginBottom: 10 },
   sectionTitle: { color: '#333', fontSize: Typography.fontSize.larger, fontFamily: Typography.fontFamily.medium },
   listContainer: { margin: 10 },

@@ -2,12 +2,14 @@ import React, { useRef, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, ScrollView, Dimensions, Animated } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Typography } from '@/constants/Typography';
+import { useAvatarStore } from '@/stores/avatarStore';
+import Head from '@/assets/avatar/head/Head';
+import { hairComponents, eyesComponents, eyebrowsComponents, mouthComponents, othersComponents } from '@/assets/avatar/components/avatarComponents';
 import ExclamationIcon from '@/assets/icons/Exclamation.svg';
 import UserIcon from '@/assets/icons/User.svg';
 import Article1Icon from '@/assets/icons/article/Article1.svg';
 import Article2Icon from '@/assets/icons/article/Article2.svg';
 import Article3Icon from '@/assets/icons/article/Article3.svg';
-
 
 const { width } = Dimensions.get('window');
 
@@ -16,6 +18,12 @@ export default function HomeScreen() {
   const [activeIndex, setActiveIndex] = useState(0);
   const flatListRef = useRef<FlatList>(null);
   const [showUserMenu, setShowUserMenu] = useState(false);
+  
+  const selections = useAvatarStore((state) => state.selections);
+  const useAvatar = useAvatarStore((state) => state.useAvatar);  
+  const skinIndex = selections['Skin Colour'] ? parseInt(selections['Skin Colour']) : 0;
+  const hairColor = ['#E3E0D9', '#F6C870', '#FCAC15', '#CE7230', '#865028', '#4B301C', '#150C0C'][parseInt(selections['Hair Colour'] || '0')];
+  
   const progressSlides = [
     {
       title: "Your average heart rate has been",
@@ -70,7 +78,7 @@ export default function HomeScreen() {
                 style={styles.menuButton}
                 onPress={() => {
                   setShowUserMenu(false);
-                  router.push('/AvatarBuilder');
+                  router.push({ pathname: '/AvatarBuilder', params: { redirectTo: '/(tabs)/home' } });
                 }}
               >
                 <Text style={styles.menuButtonText}>Change Avatar</Text>
@@ -79,7 +87,9 @@ export default function HomeScreen() {
                 style={styles.menuButton}
                 onPress={() => {
                   setShowUserMenu(false);
-                  router.replace('/');
+                  router.push({
+                    pathname: '/',
+                  });
                 }}
               >
                 <Text style={styles.menuButtonText}>Logout</Text>
@@ -93,9 +103,37 @@ export default function HomeScreen() {
         <View style={styles.greetingContainer}>
           <Text style={styles.greeting}>Good Morning!</Text>
           <TouchableOpacity onPress={() => setShowUserMenu(true)}>
-            <UserIcon width={30} height={30} style={styles.userIcon} />
-          </TouchableOpacity>
-        </View>
+            <View style={styles.avatarCircle}>
+              {useAvatar ? (
+                <View style={styles.avatarLayerWrapper}>
+                  <Head colorIndex={skinIndex} width={50} height={50} />
+                  {selections['Hair'] && (() => {
+                    const Comp = hairComponents[selections['Hair']!];
+                    return <Comp width={50} height={50} color={hairColor} style={styles.avatarLayer} />;
+                  })()}
+                  {selections['Eyes'] && (() => {
+                    const Comp = eyesComponents[selections['Eyes']!];
+                    return <Comp width={50} height={50} style={styles.avatarLayer} />;
+                  })()}
+                  {selections['Eyebrows'] && (() => {
+                    const Comp = eyebrowsComponents[selections['Eyebrows']!];
+                    return <Comp width={50} height={50} style={styles.avatarLayer} />;
+                  })()}
+                  {selections['Mouth'] && (() => {
+                    const Comp = mouthComponents[selections['Mouth']!];
+                    return <Comp width={50} height={50} style={styles.avatarLayer} />;
+                  })()}
+                  {selections['Others'] && (() => {
+                    const Comp = othersComponents[selections['Others']!];
+                    return <Comp width={50} height={50} color={hairColor} style={styles.avatarLayer} />;
+                  })()}
+                </View>
+                  ) : (
+                    <UserIcon width={40} height={40} />
+                  )}
+              </View>
+            </TouchableOpacity>
+          </View>
         <Text style={styles.userName}>John</Text>
   
         {/* Carousel */}
@@ -170,11 +208,31 @@ const styles = StyleSheet.create({
     fontSize: Typography.fontSize.larger,
     fontFamily: Typography.fontFamily.regular,
   },
-  userIcon: {
-    width: 30, 
-    height: 30,
+  avatarCircle: {
+    width: 55,
+    height: 55,
+    borderRadius: 30,
+    backgroundColor: '#FFFFFF',
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
   },
-
+  
+  avatarLayerWrapper: {
+    width: 50,
+    height: 50,
+    position: 'relative',
+  },
+  
+  avatarLayer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+  },
   listContainer:{
     margin: 10,
   } , 

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useAvatarStore } from '@/stores/avatarStore';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import Head from '@/assets/avatar/head/Head';
 import { Typography } from '@/constants/Typography';
 import { hairComponents } from '@/assets/avatar/components/avatarComponents';
@@ -14,6 +16,7 @@ const featureTabs = ['Skin Colour', 'Hair', 'Hair Colour', 'Eyes', 'Eyebrows', '
 
 export default function AvatarBuilder() {
   const router = useRouter();
+  const { redirectTo } = useLocalSearchParams();
 
   const [activeFeature, setActiveFeature] = useState('Skin Colour');
   const [selections, setSelections] = useState<Record<string, string | null>>({
@@ -29,6 +32,13 @@ export default function AvatarBuilder() {
   const handleOptionSelect = (feature: string, value: string) => {
     setSelections((prev) => ({ ...prev, [feature]: value }));
   };
+
+  const handleDone = () => {
+    useAvatarStore.getState().setSelections(selections);
+    useAvatarStore.getState().setUseAvatar(true); // ✅ user has completed avatar
+    router.replace(typeof redirectTo === 'string' ? redirectTo : '/(tabs)/tutorialhomescreen');
+  };
+  
 
   const requiredFeatures = ['Skin Colour', 'Eyes', 'Eyebrows', 'Mouth'];
   const isDone = requiredFeatures.every((feature) => selections[feature] !== null);
@@ -216,10 +226,14 @@ export default function AvatarBuilder() {
         <TouchableOpacity onPress={() => router.back()}>
             <BackIcon width={24} height={24} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => router.replace('/(tabs)/tutorialhomescreen')}>
+        <TouchableOpacity
+          onPress={() => {
+            useAvatarStore.getState().setUseAvatar(false);
+            router.replace('/(tabs)/tutorialhomescreen');
+          }}
+        >
           <Text style={styles.navText}>Skip</Text>
-        </TouchableOpacity>
-        
+        </TouchableOpacity>        
       </View>
 
       {/* Avatar Preview */}
@@ -296,7 +310,7 @@ export default function AvatarBuilder() {
       {/* Done Button */}
       <TouchableOpacity
         style={[styles.doneButton, !isDone && styles.doneButtonDisabled]}
-        onPress={() => router.replace('/(tabs)/tutorialhomescreen')}
+        onPress={handleDone}
         disabled={!isDone}
       >
         <Text style={styles.doneButtonText}>Done!</Text>
