@@ -18,6 +18,7 @@ import ShortHair4 from '@/assets/avatar/hair/short_hair4.svg';
 import ShortHair5 from '@/assets/avatar/hair/short_hair5.svg';
 
 export const hairComponents: Record<string, React.FC<any>> = {
+  cancel: CancelIcon,
   'long_hair1': LongHair1,
   'long_hair2': LongHair2,
   'long_hair3': LongHair3,
@@ -74,6 +75,7 @@ import Mouth7 from '@/assets/avatar/mouth/mouth7.svg';
 import Mouth8 from '@/assets/avatar/mouth/mouth8.svg';
 import Mouth9 from '@/assets/avatar/mouth/mouth9.svg';
 import Mouth10 from '@/assets/avatar/mouth/mouth10.svg';
+import Mouth11 from '@/assets/avatar/mouth/mouth11.svg';
 
 export const mouthComponents: Record<string, React.FC<any>> = {
   'mouth_1': Mouth1,
@@ -86,8 +88,10 @@ export const mouthComponents: Record<string, React.FC<any>> = {
   'mouth_8': Mouth8,
   'mouth_9': Mouth9,
   'mouth_10': Mouth10,
+  'mouth_11': Mouth11,
 };
 
+import CancelIcon from '@/assets/avatar/others/cancel.svg';
 import Others1 from '@/assets/avatar/others/others1.svg';
 import Others2 from '@/assets/avatar/others/others2.svg';
 import Others3 from '@/assets/avatar/others/others3.svg';
@@ -100,6 +104,7 @@ import Others9 from '@/assets/avatar/others/others9.svg';
 import Others10 from '@/assets/avatar/others/others10.svg';
 
 export const othersComponents: Record<string, React.FC<any>> = {
+  cancel: CancelIcon,
   'others_1': Others1,
   'others_2': Others2,
   'others_3': Others3,
