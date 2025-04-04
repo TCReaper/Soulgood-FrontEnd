@@ -16,15 +16,22 @@ export default function AvatarBuilder() {
   const router = useRouter();
 
   const [activeFeature, setActiveFeature] = useState('Skin Colour');
-  const [selections, setSelections] = useState<Record<string, string | null>>(
-    Object.fromEntries(featureTabs.map((f) => [f, null]))
-  );
+  const [selections, setSelections] = useState<Record<string, string | null>>({
+    'Skin Colour': '0',  // 👈 Default to first skin colour
+    'Hair': null,
+    'Hair Colour': null,
+    'Eyes': null,
+    'Eyebrows': null,
+    'Mouth': null,
+    'Others': null,
+  });  
 
   const handleOptionSelect = (feature: string, value: string) => {
     setSelections((prev) => ({ ...prev, [feature]: value }));
   };
 
-  const isDone = Object.values(selections).every((val) => val !== null);
+  const requiredFeatures = ['Skin Colour', 'Eyes', 'Eyebrows', 'Mouth'];
+  const isDone = requiredFeatures.every((feature) => selections[feature] !== null);
   const selectedSkinIndex = selections['Skin Colour'] ? parseInt(selections['Skin Colour']) : 0;
   const skinColors = [
     '#FADCD1', '#F8D9CE', '#F6D7CB', '#EDC9BC',
@@ -117,43 +124,64 @@ export default function AvatarBuilder() {
       );
     } 
 
-      if (activeFeature === 'Others') {
-        return (
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.optionRow}>
-            {Object.entries(othersComponents).map(([key, OthersComp]) => {
-              const selected = selections['Others'] === key;
-              return (
-                <TouchableOpacity
-                  key={key}
-                  style={[styles.option, selected && styles.optionSelected]}
-                  onPress={() => handleOptionSelect('Others', key)}
-                >
-                  {OthersComp ? <OthersComp width={150} height={150} /> : null}
-                </TouchableOpacity>
-              );
-            })}
-          </ScrollView>
-        );
-      }
-
     if (activeFeature === 'Hair') {
       return (
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.optionRow}>
           {Object.entries(hairComponents).map(([key, HairComp]) => {
-            const selected = selections['Hair'] === key;
+            const isCancel = key === 'cancel';
+            const selected = selections['Hair'] === key || (isCancel && selections['Hair'] === null);
+    
             return (
               <TouchableOpacity
                 key={key}
                 style={[styles.option, selected && styles.optionSelected]}
-                onPress={() => handleOptionSelect('Hair', key)}
+                onPress={() =>
+                  isCancel
+                    ? handleOptionSelect('Hair', null) // Clear hair selection
+                    : handleOptionSelect('Hair', key)
+                }
               >
-                {HairComp ? <HairComp width={80} height={80} color={selectedHairColor} /> : null}
+                <HairComp
+                  width={isCancel ? 80 : 80}
+                  height={isCancel ? 80 : 80}
+                  color={isCancel ? undefined : selectedHairColor}
+                />
+              </TouchableOpacity>
+            );
+          })}
+        </ScrollView>
+      );
+    }    
+
+    if (activeFeature === 'Others') {
+      return (
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.optionRow}>
+          {Object.entries(othersComponents).map(([key, OthersComp]) => {
+            const isCancel = key === 'cancel';
+            const selected = selections['Others'] === key || (isCancel && selections['Others'] === null);
+    
+            return (
+              <TouchableOpacity
+                key={key}
+                style={[styles.option, selected && styles.optionSelected]}
+                onPress={() =>
+                  isCancel
+                    ? handleOptionSelect('Others', null) // Clear selection
+                    : handleOptionSelect('Others', key)
+                }
+              >
+                <OthersComp
+                  width={isCancel ? 80 : 150}
+                  height={isCancel ? 80 : 150}
+                  color={['others_8', 'others_9', 'others_10'].includes(key) ? selectedHairColor : undefined}
+                />
               </TouchableOpacity>
             );
           })}
         </ScrollView>
       );
     }
+       
   
     if (activeFeature === 'Hair Colour') {
         return (
@@ -188,7 +216,7 @@ export default function AvatarBuilder() {
         <TouchableOpacity onPress={() => router.back()}>
             <BackIcon width={24} height={24} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => router.push('/(tabs)/home')}>
+        <TouchableOpacity onPress={() => router.replace('/(tabs)/tutorialhomescreen')}>
           <Text style={styles.navText}>Skip</Text>
         </TouchableOpacity>
         
@@ -212,8 +240,15 @@ export default function AvatarBuilder() {
             })()}
 
             {selections['Others'] && (() => {
-            const OthersComponent = othersComponents[selections['Others']!];
-            return <OthersComponent style={styles.othersLayer} />;
+              const OthersComponent = othersComponents[selections['Others']!];
+              const beardKeys = ['others_8', 'others_9', 'others_10'];
+              const shouldApplyHairColor = beardKeys.includes(selections['Others']!);
+              return (
+                <OthersComponent
+                  style={styles.othersLayer}
+                  color={shouldApplyHairColor ? selectedHairColor : undefined}
+                />
+              );
             })()}
 
             {selections['Mouth'] && (() => {
@@ -222,8 +257,8 @@ export default function AvatarBuilder() {
             })()}
 
             {selections['Hair'] && (() => {
-            const HairComponent = hairComponents[selections['Hair']!];
-            return <HairComponent color={selectedHairColor} style={styles.hairLayer} />;
+              const HairComponent = hairComponents[selections['Hair']!];
+              return <HairComponent color={selectedHairColor} style={styles.hairLayer} />;
             })()}
 
             </View>
@@ -261,10 +296,10 @@ export default function AvatarBuilder() {
       {/* Done Button */}
       <TouchableOpacity
         style={[styles.doneButton, !isDone && styles.doneButtonDisabled]}
-        onPress={() => console.log('Avatar completed!')}
+        onPress={() => router.replace('/(tabs)/tutorialhomescreen')}
         disabled={!isDone}
       >
-        <Text style={styles.doneButtonText}>{isDone ? 'Done!' : 'Done!'}</Text>
+        <Text style={styles.doneButtonText}>Done!</Text>
       </TouchableOpacity>
       </View>
     </View>
@@ -405,7 +440,7 @@ const styles = StyleSheet.create({
       backgroundColor: '#EFEEE7',
     },
     doneButtonText: {
-      color: '#B5B5B5',
+      color: '#FFFFFF',
       fontFamily: Typography.fontFamily.bold,
       fontSize: Typography.fontSize.large,
     },
