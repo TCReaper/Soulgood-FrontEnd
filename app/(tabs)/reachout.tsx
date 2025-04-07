@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Linking, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Typography } from '@/constants/Typography';
@@ -6,17 +6,22 @@ import BackIcon from '@/assets/icons/Back.svg';
 import CallIcon from '@/assets/icons/reachout/call.svg'; // Import the Call Button SVG
 
 const helplines = [
-  { name: 'Institute of Mental Health', phone: '63892000' },
-  { name: 'Samaritans of Singapore', phone: '1767' },
-  { name: 'SOS Hotline', phone: '18002214444' },
-  { name: 'MindSG', phone: ' ' },
-  { name: 'National Council of Social Services', phone: ' ' },
-  { name: 'JustAsk', phone: ' ' },
+  { name: 'Institute of Mental Health', phone: '63892000', url: 'https://www.imh.com.sg' },
+  { name: 'Samaritans of Singapore', phone: '1767', url: 'https://www.sos.org.sg' },
+  { name: 'Mental Health Helpline', phone: '18002231313', url: 'https://www.healthhub.sg' },
+  { name: 'TOUCHline', phone: '18003772252', url: 'https://www.touch.org.sg' },
+  { name: 'National Council of Social Services', phone: '62102500', url: 'https://www.ncss.gov.sg' },
+  { name: 'Silver Ribbon Singapore', phone: '63861928', url: 'https://www.silverribbonsingapore.com' },
 ];
 
 export default function ReachOut() {
   const router = useRouter();
   const [showExitConfirm, setShowExitConfirm] = useState(false);
+  const [websiteToOpen, setWebsiteToOpen] = useState<string | null>(null);
+
+  useEffect(() => {
+    setShowExitConfirm(false);
+  }, []);
 
   const handleBack = () => {
     setShowExitConfirm(true); // Show the popup instead of navigating immediately
@@ -43,11 +48,16 @@ export default function ReachOut() {
 
       <Text style={styles.header}>Help Lines</Text>
       {helplines.map((helpline, index) => (
-        <TouchableOpacity key={index} style={styles.helplineItem} onPress={() => handleCall(helpline.phone)}>
-          <Text style={styles.helplineText}>{helpline.name}</Text>
-          <CallIcon width={24} height={24} style={styles.callIcon} />
-        </TouchableOpacity>
+        <View key={index} style={styles.helplineItem}>
+          <TouchableOpacity onPress={() => setWebsiteToOpen(helpline.url)}>
+            <Text style={styles.helplineTextUnderline}>{helpline.name}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => handleCall(helpline.phone)}>
+            <CallIcon width={24} height={24} style={styles.callIcon} />
+          </TouchableOpacity>
+        </View>
       ))}
+
 
       {/* Exit Confirmation Popup with Dark Overlay */}
       {showExitConfirm && (
@@ -55,7 +65,13 @@ export default function ReachOut() {
           <View style={styles.exitConfirmBox}>
             <Text style={styles.confirmText}>Are you sure?</Text>
             <Text style={styles.confirmSubtext}>You will be redirected back to the homepage.</Text>
-            <TouchableOpacity style={styles.confirmButton} onPress={() => router.replace('/home')}>
+            <TouchableOpacity
+              style={styles.confirmButton}
+              onPress={() => {
+                setShowExitConfirm(false); // 👈 reset before navigating
+                router.replace('/home');
+              }}
+            >
               <Text style={styles.confirmButtonText}>Yes, I am sure</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.cancelButton} onPress={() => setShowExitConfirm(false)}>
@@ -64,7 +80,29 @@ export default function ReachOut() {
           </View>
         </TouchableOpacity>
       )}
-    </View>
+
+    {/* Safari Website Confirmation Popup */}
+    {websiteToOpen && (
+      <TouchableOpacity style={styles.overlay} activeOpacity={1} onPress={() => setWebsiteToOpen(null)}>
+        <View style={styles.exitConfirmBox}>
+          <Text style={styles.confirmText}>Are you sure?</Text>
+          <Text style={styles.confirmSubtext}>You will be redirected to Safari to view the website.</Text>
+          <TouchableOpacity
+            style={styles.confirmButton}
+            onPress={() => {
+              Linking.openURL(websiteToOpen);
+              setWebsiteToOpen(null);
+            }}
+          >
+            <Text style={styles.confirmButtonText}>Yes, open in Safari</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.cancelButton} onPress={() => setWebsiteToOpen(null)}>
+            <Text style={styles.cancelText}>Close</Text>
+          </TouchableOpacity>
+        </View>
+      </TouchableOpacity>
+    )}
+  </View>
   );
 }
 
@@ -131,6 +169,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 
+  helplineTextUnderline: {
+    fontSize: Typography.fontSize.large,
+    fontFamily: Typography.fontFamily.regular,
+    color: '#333333',
+    textDecorationLine: 'underline',
+    flex: 1,
+  },  
+
   callIcon: {
     marginLeft: 10, // Space between text and icon
   },
@@ -149,7 +195,7 @@ const styles = StyleSheet.create({
 
   exitConfirmBox: {
     width: '80%',
-    height: '45%',
+    height: '40%',
     backgroundColor: '#F9F7F0',
     padding: 20,
     borderRadius: 50,
@@ -169,7 +215,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     textAlign: 'center',
     marginTop: 10,
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
   },
 
   confirmButton: {

@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useRouter } from 'expo-router';
+import { useTaskStore } from '@/stores/taskStore';
 import BackIcon from '@/assets/icons/Back.svg';
 import { Typography } from '@/constants/Typography';
+
+const completeCheckIn = useTaskStore((state) => state.completeCheckIn);
 
 const questions = [
   {
@@ -41,11 +44,11 @@ export default function DailyCheckInScreen() {
 
   const handleNext = () => {
     if (!answers[currentQuestionIndex]) return;
-
+  
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
-      console.log("Check-in complete! Answers:", answers);
+      completeCheckIn(); // ✅ Mark task as completed
       router.replace('/home');
     }
   };

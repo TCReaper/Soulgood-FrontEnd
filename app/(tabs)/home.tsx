@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, FlatList, ScrollView, Dimensi
 import { useRouter } from 'expo-router';
 import { Typography } from '@/constants/Typography';
 import { useAvatarStore } from '@/stores/avatarStore';
+import { useTaskStore } from '@/stores/taskStore';
 import Head from '@/assets/avatar/head/Head';
 import { hairComponents, eyesComponents, eyebrowsComponents, mouthComponents, othersComponents } from '@/assets/avatar/components/avatarComponents';
 import ExclamationIcon from '@/assets/icons/Exclamation.svg';
@@ -19,6 +20,7 @@ export default function HomeScreen() {
   const flatListRef = useRef<FlatList>(null);
   const [showUserMenu, setShowUserMenu] = useState(false);
   
+  const isCheckInCompleted = useTaskStore((state) => state.isCheckInCompleted);
   const selections = useAvatarStore((state) => state.selections);
   const useAvatar = useAvatarStore((state) => state.useAvatar);  
   const skinIndex = selections['Skin Colour'] ? parseInt(selections['Skin Colour']) : 0;
@@ -27,31 +29,34 @@ export default function HomeScreen() {
   const progressSlides = [
     {
       title: "Your average heart rate has been",
-      value: "092",
+      value: "142",
       description: "bpm",
       color: "#C72323",
+      details: "If you have been feeling stressed or experiencing physical discomfort, consider:\n1. Going out for a run\n2. Deep breathing\n3. Listening to some upbeat music",
     },
     {
       title: "Your heart rate has been consistently",
-      value: "LOW",
+      value: "HIGH",
       description: "",
       color: "#C72323",
-    },
-    {
-      title: "You have been sleeping an average of",
-      value: "7 hours 34 minutes",
-      description: "",
-      color: "#C72323",
+      details: "This could be linked to stress or emotional shifts. Try incorporating calming activities like deep breathing or a short walk to see if it helps.",
     },
   ];
+  
 
   const renderSlide = ({ item }: { item: any }) => (
-    <View style={styles.heartRateCard}>
-      <Text style={styles.slideTitle}>{item.title}</Text>
-      <Text style={[styles.progressValue, { color: item.color }]}>{item.value}</Text>
-      {item.description && <Text style={styles.slideDescription}>{item.description}</Text>}
-    </View>
-  );
+    <TouchableOpacity onPress={() => router.push({ pathname: '/activity', params: { data: JSON.stringify(item) } })}>
+      <View style={styles.heartRateCard}>
+        <Text style={styles.slideTitle}>{item.title}</Text>
+        <View style={styles.valueRow}>
+          <Text style={[styles.progressValue, { color: item.color }]}>{item.value}</Text>
+          {item.description && (
+            <Text style={styles.slideDescription}>{item.description}</Text>
+          )}
+        </View>
+      </View>
+    </TouchableOpacity>  
+  );  
 
   const handleScroll = (event: any) => {
     const index = Math.round(event.nativeEvent.contentOffset.x / width);
@@ -59,10 +64,25 @@ export default function HomeScreen() {
   };
 
   const articleData = [
-    { title: 'How to sleep better?', id: '1', icon: <Article1Icon width={50} height={50} /> },
-    { title: 'What are signs of depression?', id: '2', icon: <Article2Icon width={50} height={50} /> },
-    { title: 'How to manage stress?', id: '3', icon: <Article3Icon width={50} height={50} /> },
-  ];
+    {
+      id: '1',
+      title: 'How to sleep better?',
+      icon: <Article1Icon width={100} height={100} />,
+      backgroundColor: '#FFEFE7', // light peach
+    },
+    {
+      id: '2',
+      title: 'What are signs of depression?',
+      icon: <Article2Icon width={100} height={100} />,
+      backgroundColor: '#E9EDFF', // light purple
+    },
+    {
+      id: '3',
+      title: 'How to manage stress?',
+      icon: <Article3Icon width={100} height={100} />,
+      backgroundColor: '#E9FFE9', // light green
+    },
+  ];  
 
   return (
     <View style={{ flex: 1 }}>
@@ -164,23 +184,38 @@ export default function HomeScreen() {
   
         {/* Task Section */}
         <Text style={styles.sectionTitle}>Pending Task</Text>
-        <TouchableOpacity style={styles.taskCard} onPress={() => router.replace('/checkin')}>
-          <View style={styles.taskContent}>
-            <ExclamationIcon width={24} height={24} style={styles.taskIcon} />
-            <Text style={styles.taskText}>
-              You’ve got a task waiting for you. {'\n'}
-              <Text style={styles.taskHighlight}>Tap to finish it!</Text>
+        {isCheckInCompleted ? (
+          <View style={[styles.taskCard, { backgroundColor: '#EDEDED' }]}>
+            <Text style={[styles.taskText, { color: '#333', paddingLeft: 10 }]}>
+              <Text style={{ fontFamily: Typography.fontFamily.bold }}>
+                Congratulations!
+              </Text>
+              {'\n'}
+              <Text style={{ fontFamily: Typography.fontFamily.medium }}>
+                You’ve completed all your tasks. Great job!
+              </Text>
             </Text>
           </View>
-        </TouchableOpacity>
+        ) : (
+          <TouchableOpacity style={styles.taskCard} onPress={() => router.replace('/checkin')}>
+            <View style={styles.taskContent}>
+              <ExclamationIcon width={24} height={24} style={styles.taskIcon} />
+              <Text style={styles.taskText}>
+                You’ve got a task waiting for you. {'\n'}
+                <Text style={styles.taskHighlight}>Tap to finish it!</Text>
+              </Text>
+            </View>
+          </TouchableOpacity>
+        )}
+
   
         {/* For You */}
-        <Text style={styles.sectionTitle}>For you</Text>
+        <Text style={styles.sectionTitle}>For You</Text>
         <FlatList
           data={articleData}
           horizontal
           renderItem={({ item }) => (
-            <View style={styles.articleCard}>
+            <View style={[styles.articleCard, { backgroundColor: item.backgroundColor }]}>
               <Text style={styles.articleTitle}>{item.title}</Text>
               <View style={styles.articleIconContainer}>
                 {item.icon}
@@ -215,11 +250,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     justifyContent: 'center',
     alignItems: 'center',
-    overflow: 'hidden',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
+    shadowOpacity: 0.25,
     shadowRadius: 4,
+    shadowOffset: { width: 0, height: 4 },
   },
   
   avatarLayerWrapper: {
@@ -276,13 +310,20 @@ const styles = StyleSheet.create({
     fontSize: Typography.fontSize.extra,
     fontFamily: Typography.fontFamily.extrabold,
   },
+  valueRow: {
+    flexDirection: 'row',
+    alignSelf: 'flex-end', // Aligns the whole row to the right
+    alignItems: 'flex-end', // Vertically aligns text baseline
+    gap: 5, // Optional: spacing between value and description
+    marginTop: 15,
+  },  
   slideDescription: { 
     color: '#333333',
     fontSize: Typography.fontSize.small,
-    fontFamily: Typography.fontFamily.extrabold,
-    textAlign: 'center', 
-    marginTop: 5, 
+    fontFamily: Typography.fontFamily.bold,
+    paddingBottom: 10, // pulls it downward to match baseline
   },
+  
 
   // Pagination styles for the carousel
   pagination: { flexDirection: 'row', justifyContent: 'center', marginVertical: 10 },
@@ -307,6 +348,10 @@ const styles = StyleSheet.create({
     padding: 16,
     marginBottom: 10,
     marginTop: 10,
+    shadowColor: '#000',
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    shadowOffset: { width: 3, height: 5 },
   },
 
   taskContent: {
@@ -332,8 +377,12 @@ const styles = StyleSheet.create({
   },
 
   // For You Section
+  articleIconContainer: {
+    marginLeft: 20, // <-- tweak this value to adjust right shift
+    alignSelf: 'flex-start', // makes sure marginLeft takes effect
+  },
+  
   articleCard: {
-    backgroundColor: '#E0F7FA',
     padding: 15,
     borderRadius: 10,
     marginHorizontal: 5,
@@ -341,6 +390,10 @@ const styles = StyleSheet.create({
     height: 200,
     justifyContent: 'space-between', 
     marginTop: 10,
+    shadowColor: '#000',
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 4 },
   },
   
   articleTitle: {
