@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView, ActivityIndicator } from "react-native";
 import { useRouter } from 'expo-router';
 import { Typography } from '@/constants/Typography';
@@ -11,8 +11,12 @@ export default function ChatScreen() {
   const router = useRouter();
   const [showExitConfirm, setShowExitConfirm] = useState(false);
   
+  useEffect(() => {
+    setShowExitConfirm(false);
+  }, []);
+
   const handleBack = () => {
-    setShowExitConfirm(true);
+    setShowExitConfirm(true); // Show the popup instead of navigating immediately
   };
 
   const [chatStarted, setChatStarted] = useState(false);
@@ -130,7 +134,13 @@ export default function ChatScreen() {
           <View style={styles.exitConfirmBox}>
             <Text style={styles.confirmText}>Are you sure?</Text>
             <Text style={styles.confirmSubtext}>You will be redirected back to the homepage.</Text>
-            <TouchableOpacity style={styles.confirmButton} onPress={() => router.replace('/home')}>
+            <TouchableOpacity
+              style={styles.confirmButton}
+              onPress={() => {
+                setShowExitConfirm(false); // 👈 reset before navigating
+                router.replace('/home');
+              }}
+            >
               <Text style={styles.confirmButtonText}>Yes, I am sure</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.cancelButton} onPress={() => setShowExitConfirm(false)}>
@@ -303,6 +313,7 @@ const styles = StyleSheet.create({
 
   exitConfirmBox: {
     width: '80%',
+    height: '40%',
     backgroundColor: '#F9F7F0',
     padding: 20,
     borderRadius: 50,

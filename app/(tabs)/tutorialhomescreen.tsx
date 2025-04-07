@@ -13,25 +13,25 @@ export default function TutorialHomeScreen() {
   const tutorialSteps = [
     {
       text: "This section shows your weekly heart rate statistics.",
-      tooltipPosition: { bottom: 300 },
+      tooltipPosition: { bottom: 280 },
       overlays: {
-        top: { height: height * 0.16 },
-        bottom: { top: height * 0.44 },
+        top: { height: height * 0.19 },
+        bottom: { top: height * 0.47 },
       },
     },
     {
       text: "Here is your pending task. \n Tap this in the real app to complete check-ins.",
-      tooltipPosition: { bottom: 160 },
+      tooltipPosition: { bottom: 140 },
       overlays: {
-        top: { height: height * 0.44 },
-        bottom: { top: height * 0.58 },
+        top: { height: height * 0.47 },
+        bottom: { top: height * 0.61 },
       },
     },
     {
       text: "These are helpful articles recommended for you.",
-      tooltipPosition: { bottom: 380 },
+      tooltipPosition: { bottom: 350 },
       overlays: {
-        top: { height: height * 0.58 },
+        top: { height: height * 0.61 },
         bottom: { top: height * 0.90 },
       },
     },

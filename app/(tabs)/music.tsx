@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, FlatList, Image } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Typography } from '@/constants/Typography';
@@ -16,6 +16,10 @@ const songs = [
 export default function MusicPage() {
   const router = useRouter();
   const [showExitConfirm, setShowExitConfirm] = useState(false);
+
+  useEffect(() => {
+    setShowExitConfirm(false);
+  }, []);
 
   const handleBack = () => {
     setShowExitConfirm(true); // Show the popup instead of navigating immediately
@@ -56,7 +60,13 @@ export default function MusicPage() {
           <View style={styles.exitConfirmBox}>
             <Text style={styles.confirmText}>Are you sure?</Text>
             <Text style={styles.confirmSubtext}>You will be redirected back to the homepage.</Text>
-            <TouchableOpacity style={styles.confirmButton} onPress={() => router.replace('/home')}>
+            <TouchableOpacity
+              style={styles.confirmButton}
+              onPress={() => {
+                setShowExitConfirm(false); // 👈 reset before navigating
+                router.replace('/home');
+              }}
+            >
               <Text style={styles.confirmButtonText}>Yes, I am sure</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.cancelButton} onPress={() => setShowExitConfirm(false)}>
@@ -150,7 +160,7 @@ const styles = StyleSheet.create({
   },
   exitConfirmBox: {
     width: '80%',
-    height: '45%',
+    height: '40%',
     backgroundColor: '#F9F7F0',
     padding: 20,
     borderRadius: 50,

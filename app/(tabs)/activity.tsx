@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Typography } from '@/constants/Typography';
@@ -8,13 +8,37 @@ export default function ActivityPage() {
   const router = useRouter();
   const [showExitConfirm, setShowExitConfirm] = useState(false);
 
+  useEffect(() => {
+    setShowExitConfirm(false);
+  }, []);
+
   const handleBack = () => {
-    setShowExitConfirm(true); // Show the popup instead of navigating immediately
+    setShowExitConfirm(true);
   };
+
+  // Reuse the same slides from the homepage
+  const progressSlides = [
+    {
+      title: "Your average heart rate has been",
+      value: "142",
+      description: "bpm",
+      color: "#C72323",
+      details:
+        "If you have been feeling stressed or experiencing physical discomfort, consider:\n1. Going out for a run\n2. Deep breathing\n3. Listening to some upbeat music",
+    },
+    {
+      title: "Your heart rate has been consistently",
+      value: "HIGH",
+      description: "",
+      color: "#C72323",
+      details:
+        "This could be linked to stress or emotional shifts. Try incorporating calming activities like deep breathing or a short walk to see if it helps.",
+    },
+  ];
 
   return (
     <View style={styles.container}>
-      {/* Top Bar with Back Button and Title */}
+      {/* Top Bar */}
       <View style={styles.topBar}>
         <TouchableOpacity onPress={handleBack} style={styles.goBackButton}>
           <BackIcon width={24} height={24} />
@@ -23,44 +47,57 @@ export default function ActivityPage() {
         <View style={{ width: 40 }} />
       </View>
 
-      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false} overScrollMode="never">
-        <Text style={styles.header}>Heart Activity</Text>
-        <View style={styles.activityCard}>
-          <Text style={styles.activityText}>Your average heart rate has been</Text>
-          <Text style={styles.activityHighlight}>142 bpm</Text>
-          <Text style={styles.activitySubtext}>
-            If you have been feeling stressed or experiencing physical discomfort, consider:
-            {'\n'}1. Resting
-            {'\n'}2. Relaxation techniques
-            {'\n'}3. Talk to someone you trust
-          </Text>
-        </View>
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={{ paddingHorizontal: 20 }}
+        showsVerticalScrollIndicator={false}
+        overScrollMode="never"
+      >
+        <View>
+          <Text style={styles.header}>Heart Activity</Text>
+          {progressSlides.map((slide, index) => (
+            <View key={index} style={styles.activityCard}>
+              <Text style={styles.activityText}>{slide.title}</Text>
 
-        <View style={styles.activityCard}>
-          <Text style={styles.activityText}>Your heart rate has been consistently</Text>
-          <Text style={styles.activityHighlight}>HIGH</Text>
-          <Text style={styles.activitySubtext}>
-            This could be linked to stress or emotional shifts. Try incorporating calming activities like deep breathing or a short walk to see if it helps.
-          </Text>
-        </View>
+              <View style={styles.valueRow}>
+                <Text style={[styles.progressValue, { color: slide.color }]}>{slide.value}</Text>
+                {slide.description ? (
+                  <Text style={styles.slideDescription}>{slide.description}</Text>
+                ) : null}
+              </View>
 
-        <Text style={styles.header}>Sleep Cycle</Text>
-        <View style={styles.activityCard}>
-          <Text style={styles.activityText}>You have been sleeping an average of</Text>
-          <Text style={styles.activityHighlight}>3 hours 34 min</Text>
+              {slide.details && (
+                <Text style={styles.activityDetails}>{slide.details}</Text>
+              )}
+            </View>
+          ))}
         </View>
       </ScrollView>
 
-      {/* Exit Confirmation Popup with Dark Overlay */}
       {showExitConfirm && (
-        <TouchableOpacity style={styles.overlay} activeOpacity={1} onPress={() => setShowExitConfirm(false)}>
+        <TouchableOpacity
+          style={styles.overlay}
+          activeOpacity={1}
+          onPress={() => setShowExitConfirm(false)}
+        >
           <View style={styles.exitConfirmBox}>
             <Text style={styles.confirmText}>Are you sure?</Text>
-            <Text style={styles.confirmSubtext}>You will be redirected back to the homepage.</Text>
-            <TouchableOpacity style={styles.confirmButton} onPress={() => router.replace('/home')}>
+            <Text style={styles.confirmSubtext}>
+              You will be redirected back to the homepage.
+            </Text>
+            <TouchableOpacity
+              style={styles.confirmButton}
+              onPress={() => {
+                setShowExitConfirm(false);
+                router.replace('/home');
+              }}
+            >
               <Text style={styles.confirmButtonText}>Yes, I am sure</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.cancelButton} onPress={() => setShowExitConfirm(false)}>
+            <TouchableOpacity
+              style={styles.cancelButton}
+              onPress={() => setShowExitConfirm(false)}
+            >
               <Text style={styles.cancelText}>Close</Text>
             </TouchableOpacity>
           </View>
@@ -73,10 +110,10 @@ export default function ActivityPage() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 20,
     paddingTop: 130,
     backgroundColor: "#F9F7F0",
   },
+  
   topBar: {
     position: "absolute",
     top: 0,
@@ -112,29 +149,49 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: Typography.fontSize.larger,
-    fontFamily: Typography.fontFamily.semibold,
+    fontFamily: Typography.fontFamily.regular,
     marginBottom: 20,
   },
   activityCard: {
     backgroundColor: '#FAF0D9',
-    padding: 20,
-    borderRadius: 10,
+    padding: 30,
+    borderRadius: 50,
     marginBottom: 20,
+    shadowColor: '#000',
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    shadowOffset: { width: 1, height: 1 },
   },
   activityText: {
+    fontSize: Typography.fontSize.medium,
+    fontFamily: Typography.fontFamily.semibold,
+    color: '#333',
+  },
+  activityDetails: {
     fontSize: Typography.fontSize.small,
     fontFamily: Typography.fontFamily.regular,
+    color: '#333',
+    marginTop: 5,
   },
-  activityHighlight: {
+  progressValue: {
+    color: '#C72323',
     fontSize: Typography.fontSize.extra,
     fontFamily: Typography.fontFamily.extrabold,
-    color: '#C72323',
   },
-  activitySubtext: {
-    fontSize: Typography.fontSize.extrasmall,
+  slideDescription: {
     color: '#333333',
-    marginTop: 10,
+    fontSize: Typography.fontSize.small,
+    fontFamily: Typography.fontFamily.bold,
+    paddingBottom: 10,
   },
+  valueRow: {
+    flexDirection: 'row',
+    alignSelf: 'flex-end',
+    alignItems: 'flex-end',
+    gap: 5,
+    marginTop: 15,
+    marginRight: 10,
+  },  
   overlay: {
     position: 'absolute',
     top: 0,
@@ -147,7 +204,7 @@ const styles = StyleSheet.create({
   },
   exitConfirmBox: {
     width: '80%',
-    height: '45%',
+    height: '40%',
     backgroundColor: '#F9F7F0',
     padding: 20,
     borderRadius: 50,

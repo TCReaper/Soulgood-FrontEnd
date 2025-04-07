@@ -2,6 +2,7 @@
 import React, { useRef, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, ScrollView, Dimensions } from 'react-native';
 import { Typography } from '@/constants/Typography';
+import UserIcon from '@/assets/icons/User.svg';
 import ExclamationIcon from '@/assets/icons/Exclamation.svg';
 import Article1Icon from '@/assets/icons/article/Article1.svg';
 import Article2Icon from '@/assets/icons/article/Article2.svg';
@@ -26,19 +27,13 @@ export default function HomeLayout() {
       description: "",
       color: "#C72323",
     },
-    {
-      title: "You have been sleeping an average of",
-      value: "7 hours 34 minutes",
-      description: "",
-      color: "#C72323",
-    },
   ];
 
   const articleData = [
-    { title: 'How to sleep better?', id: '1', icon: <Article1Icon width={50} height={50} /> },
-    { title: 'What are signs of depression?', id: '2', icon: <Article2Icon width={50} height={50} /> },
-    { title: 'How to manage stress?', id: '3', icon: <Article3Icon width={50} height={50} /> },
-  ];
+    { title: 'How to sleep better?', id: '1', icon: <Article1Icon width={100} height={100} />, backgroundColor: '#FFEFE7' },
+    { title: 'What are signs of depression?', id: '2', icon: <Article2Icon width={100} height={100} />, backgroundColor: '#E9EDFF' },
+    { title: 'How to manage stress?', id: '3', icon: <Article3Icon width={100} height={100} />, backgroundColor: '#E9FFE9' },
+  ];  
 
   const handleScroll = (event: any) => {
     const index = Math.round(event.nativeEvent.contentOffset.x / width);
@@ -48,18 +43,25 @@ export default function HomeLayout() {
   const renderSlide = ({ item }: { item: any }) => (
     <View style={styles.heartRateCard}>
       <Text style={styles.slideTitle}>{item.title}</Text>
-      <Text style={[styles.progressValue, { color: item.color }]}>{item.value}</Text>
-      {item.description && <Text style={styles.slideDescription}>{item.description}</Text>}
+      <View style={styles.valueRow}>
+        <Text style={[styles.progressValue, { color: item.color }]}>{item.value}</Text>
+        {item.description && (
+          <Text style={styles.slideDescription}>{item.description}</Text>
+        )}
+      </View>
     </View>
-  );
+  );  
 
   return (
     <View style={{ flex: 1 }}>
-      <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 120 }}>
-        <View style={styles.greetingContainer}>
-          <Text style={styles.greeting}>Good Morning!</Text>
+      <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 160 }}>
+      <View style={styles.greetingContainer}>
+        <Text style={styles.greeting}>Welcome!</Text>
+        <View style={styles.avatarCircle}>
+          <UserIcon width={40} height={40} />
         </View>
-        <Text style={styles.userName}>John</Text>
+      </View>
+        <Text style={styles.userName}>Introducing SoulGood</Text>
   
         <Text style={styles.sectionTitle}>Progress for the week</Text>
         <FlatList
@@ -97,18 +99,16 @@ export default function HomeLayout() {
           </View>
         </View>
   
-        <Text style={styles.sectionTitle}>For you</Text>
+        <Text style={styles.sectionTitle}>For You</Text>
         <FlatList
           data={articleData}
           horizontal
           renderItem={({ item }) => (
-            <View style={styles.articleCard}>
+            <View style={[styles.articleCard, { backgroundColor: item.backgroundColor }]}>
               <Text style={styles.articleTitle}>{item.title}</Text>
-              <View style={styles.articleIconContainer}>
-                {item.icon}
-              </View>
+              <View style={styles.articleIconContainer}>{item.icon}</View>
             </View>
-          )}
+          )}          
           keyExtractor={(item) => item.id}
           showsHorizontalScrollIndicator={false}
         />
@@ -122,19 +122,52 @@ const styles = StyleSheet.create({
   greetingContainer: {
     flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%',
   },
+  avatarCircle: {
+    width: 55,
+    height: 55,
+    borderRadius: 30,
+    backgroundColor: '#FFFFFF',
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 4 },
+  },  
   greeting: { color: '#333', fontSize: Typography.fontSize.larger, fontFamily: Typography.fontFamily.regular },
   userName: { color: '#333', fontSize: Typography.fontSize.larger, fontFamily: Typography.fontFamily.bold, marginBottom: 10 },
   sectionTitle: { color: '#333', fontSize: Typography.fontSize.larger, fontFamily: Typography.fontFamily.medium },
   listContainer: { margin: 10 },
   carousel: { marginVertical: 0 },
   heartRateCard: {
-    backgroundColor: '#FAF0D9', width: width * 0.8, height: 160, padding: 20, borderRadius: 30,
-    marginHorizontal: 10, shadowColor: '#000', shadowOpacity: 0.1, shadowRadius: 3,
-    shadowOffset: { width: 0, height: 4 }, alignItems: 'flex-start', marginTop: 5,
-  },
+    backgroundColor: '#FAF0D9',
+    width: width * 0.8,
+    height: 160,
+    padding: 20,
+    borderRadius: 30,
+    marginHorizontal: 10,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    shadowOffset: { width: 0, height: 4 },
+    alignItems: 'flex-start',
+    marginTop: 5,
+  },  
   slideTitle: { color: '#333', fontSize: Typography.fontSize.small, fontFamily: Typography.fontFamily.medium, marginBottom: 5 },
   progressValue: { color: '#C72323', fontSize: Typography.fontSize.extra, fontFamily: Typography.fontFamily.extrabold },
-  slideDescription: { color: '#333', fontSize: Typography.fontSize.small, fontFamily: Typography.fontFamily.extrabold, marginTop: 5 },
+  valueRow: {
+    flexDirection: 'row',
+    alignSelf: 'flex-end',
+    alignItems: 'flex-end',
+    gap: 5,
+    marginTop: 15,
+  },  
+  slideDescription: { 
+    color: '#333333',
+    fontSize: Typography.fontSize.small,
+    fontFamily: Typography.fontFamily.bold,
+    paddingBottom: 10, // pulls it downward to match baseline
+  },
   pagination: { flexDirection: 'row', justifyContent: 'center', marginVertical: 10 },
   paginationDot: { height: 6, width: 6, backgroundColor: '#FFE1A1', borderRadius: 3, marginHorizontal: 4 },
   activePaginationDot: { backgroundColor: '#FFAE00', width: 20, height: 5, borderRadius: 10 },
@@ -144,9 +177,25 @@ const styles = StyleSheet.create({
   taskText: { fontSize: Typography.fontSize.small, fontFamily: Typography.fontFamily.semibold, color: '#fff' },
   taskHighlight: { fontFamily: Typography.fontFamily.semibold, fontSize: Typography.fontSize.small },
   articleCard: {
-    backgroundColor: '#E0F7FA', padding: 15, borderRadius: 10, marginHorizontal: 5,
-    width: 150, height: 200, justifyContent: 'space-between', marginTop: 10,
+    padding: 15,
+    borderRadius: 10,
+    marginHorizontal: 5,
+    width: 150,
+    height: 200,
+    justifyContent: 'space-between',
+    marginTop: 10,
+    shadowColor: '#000',
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 4 },
   },
-  articleTitle: { fontSize: Typography.fontSize.small, fontFamily: Typography.fontFamily.regular },
-  articleIconContainer: {},
+  articleIconContainer: {
+    marginLeft: 20,
+    alignSelf: 'flex-start',
+  },
+  articleTitle: {
+    fontSize: Typography.fontSize.small,
+    fontFamily: Typography.fontFamily.regular,
+    textAlign: 'left',
+  },  
 });
