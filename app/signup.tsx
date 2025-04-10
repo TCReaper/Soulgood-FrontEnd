@@ -3,10 +3,7 @@ import { useRouter } from 'expo-router';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { Typography } from '@/constants/Typography';
 import UsernameIcon from '@/assets/icons/Username.svg';
-import EmailIcon from '@/assets/icons/Email.svg';
-import PhoneIcon from '@/assets/icons/Phone.svg';
 import PasswordIcon from '@/assets/icons/Password.svg';
-import GoogleIcon from '@/assets/icons/Google.svg';
 
 export default function SignUpScreen() {
 
@@ -30,22 +27,6 @@ export default function SignUpScreen() {
         />
       </View>
       <View style = {styles.inputContainer}>
-        <EmailIcon width = {24} height = {24} style = {styles.icon} />
-        <TextInput
-          placeholder= 'Email'
-          style = {styles.input}
-          placeholderTextColor = '#B5B5B5'
-        />
-      </View>
-      <View style = {styles.inputContainer}>
-        <PhoneIcon width = {24} height = {24} style = {styles.icon} />
-        <TextInput
-          placeholder= 'Phone'
-          style = {styles.input}
-          placeholderTextColor = '#B5B5B5'
-        />
-      </View>
-      <View style = {styles.inputContainer}>
         <PasswordIcon width = {24} height = {24} style = {styles.icon} />
         <TextInput
           placeholder= 'Password'
@@ -61,15 +42,6 @@ export default function SignUpScreen() {
           placeholderTextColor = '#B5B5B5'
         />
       </View>
-
-      <Text style={styles.orText}>or sign up with</Text>
-
-      <TouchableOpacity style={styles.googleButton}>
-      <View style={styles.googleContainer}>
-        <GoogleIcon width={24} height={24} style={styles.googleicon} />
-        <Text style={styles.googleText}>Sign up with Google</Text>
-      </View>
-    </TouchableOpacity>
 
     <TouchableOpacity style={styles.createButton} onPress={handleCreate}>
     <Text style={styles.createText}>Create</Text>

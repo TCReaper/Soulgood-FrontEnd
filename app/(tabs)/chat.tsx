@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView, ActivityIndicator } from "react-native";
 import { useRouter } from 'expo-router';
 import { Typography } from '@/constants/Typography';
@@ -6,32 +6,28 @@ import BackIcon from '@/assets/icons/Back.svg';
 import ChatIcon from '@/assets/icons/chat/chat.svg';
 import SoulyIcon from '@/assets/icons/chat/souly.svg';
 import SendIcon from '@/assets/icons/chat/send.svg';
+import axios from "axios";
 
 export default function ChatScreen() {
   const router = useRouter();
   const [showExitConfirm, setShowExitConfirm] = useState(false);
   
-  useEffect(() => {
-    setShowExitConfirm(false);
-  }, []);
-
   const handleBack = () => {
-    setShowExitConfirm(true); // Show the popup instead of navigating immediately
+    setShowExitConfirm(true);
   };
 
   const [chatStarted, setChatStarted] = useState(false);
   const [messages, setMessages] = useState([
     { id: 1, text: "Hi John! I am Souly. How can I help you today?", sender: "bot" },
   ]);
+  const [userMessage, setUserMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
 
   const topics = [
-    "Understanding my risk factors",
-    "Symptoms and warning signs",
-    "Prevention and safety tips",
-    "Interpreting my results",
-    "Available treatments and options",
-    "Others"
+    "Review Your PHQ-9 Assessment",
+    "Recognizing Symptoms and Warning Signs of Stress",
+    "Relaxation Techniques and Stress Prevention Tips",
+    "Inspiring Quotes About Life"
   ];
 
   const handleStartChat = () => {
@@ -46,22 +42,128 @@ export default function ChatScreen() {
     }, 1500);
   };
 
-  const handleSelectTopic = (topic: string) => {
-    setMessages((prev) =>
-      prev.map((msg) =>
-        msg.isTopicSelection ? { ...msg, text: "Choose a topic...", isTopicSelection: false } : msg
-      ).concat([{ id: prev.length + 1, text: topic, sender: "user" }])
+  // Function to select and send topic - Updated on 7 Apr
+  const handleSelectTopic = async (topic: string) => {
+    const updatedUI = messages.map(msg =>
+      msg.isTopicSelection ? { ...msg, text: "Choose a topic...", isTopicSelection: false } : msg
     );
-
+    const newUserMessage = { id: updatedUI.length + 1, text: topic, sender: "user" };
+    const newMessages = [...updatedUI, newUserMessage];
+  
+    setMessages(newMessages);
     setIsTyping(true);
+  
+    try {
+      const formattedMessages = newMessages.map(msg => ({
+        role: msg.sender === "user" ? "user" : "assistant",
+        content: msg.text
+      }));
+  
+      let botResponse = "";
+  
+      if (topic === "Review Your PHQ-9 Assessment") {
+        const response = await axios.post("http://127.0.0.1:5000/phq", {
+          messages: formattedMessages
+        });
+        botResponse = response.data.phq_response;
+      } else {
+        const response = await axios.post("http://127.0.0.1:5000/chat", {
+          messages: formattedMessages
+        });
+        botResponse = response.data.response;
+      }
+  
+      setMessages((prev) => [
+        ...prev,
+        { id: newMessages.length + 1, text: botResponse, sender: "bot" }
+      ]);
+    } catch (error) {
+      console.error("Error handling topic:", error);
+      setMessages((prev) => [
+        ...prev,
+        { id: prev.length + 1, text: "Sorry, I ran into an issue. Please try again.", sender: "bot" }
+      ]);
+    } finally {
+      setIsTyping(false);
+    }
+  };
+
+  // Function to send a message - Updated on 7 Apr
+  const sendMessage = async () => {
+    if (!userMessage.trim()) return;
+  
+    const newUserMessage = { id: messages.length + 1, text: userMessage, sender: "user" };
+    const updatedMessages = [...messages, newUserMessage];
+  
+    setMessages(updatedMessages);
+    setUserMessage("");
+    setIsTyping(true);
+  
+    try {
+      const formattedMessages = updatedMessages.map(msg => ({
+        role: msg.sender === "user" ? "user" : "assistant",
+        content: msg.text
+      }));
+  
+      const response = await axios.post("http://127.0.0.1:5000/chat", {
+        messages: formattedMessages
+      });
+  
+      const botMessage = {
+        id: updatedMessages.length + 1,
+        text: response.data.response,
+        sender: "bot"
+      };
+  
+      setMessages((prev) => [...prev, botMessage]);
+    } catch (error) {
+      console.error("Error sending message:", error);
+      setMessages((prev) => [
+        ...prev,
+        { id: prev.length + 1, text: "Oops! Something went wrong.", sender: "bot" }
+      ]);
+    } finally {
+      setIsTyping(false);
+    }
+  };
+
+  const handleSummary = async () => {
+    setIsTyping(true);
+    try {
+      const response = await axios.post("http://127.0.0.1:5000/summary", {
+        messages: messages.map(msg => ({ role: msg.sender === "user" ? "user" : "assistant", content: msg.text }))
+      });
+  
+      setMessages(prev => [
+        ...prev,
+        { id: prev.length + 1, text: response.data.summary, sender: "bot" }
+      ]);
+    } catch (error) {
+      console.error("Error fetching summary:", error);
+      setMessages(prev => [
+        ...prev,
+        { id: prev.length + 1, text: "Sorry, I couldn't generate a summary right now.", sender: "bot" }
+      ]);
+    } finally {
+      setIsTyping(false);
+    }
+  };
+
+  const clearChat = () => {
+    setIsTyping(true);
+    setMessages([
+      { id: 1, text: "Hi John! I am Souly. How can I help you today?", sender: "bot" }
+    ]);
+  
     setTimeout(() => {
       setMessages((prev) => [
         ...prev,
-        { id: prev.length + 1, text: "I can provide more details on this topic!", sender: "bot" }
+        { id: 2, text: "Choose a topic you would like to ask about:", sender: "bot", isTopicSelection: true }
       ]);
       setIsTyping(false);
     }, 1500);
   };
+
 
   return (
     <View style={styles.container}>
@@ -71,7 +173,10 @@ export default function ChatScreen() {
           <BackIcon width={24} height={24} />
         </TouchableOpacity>
         <Text style={styles.title}>Chat</Text>
-        <View style={{ width: 40 }} />
+        {/*<View style={{ width: 40 }} />*/}
+        <TouchableOpacity onPress={clearChat} style={styles.clearButton}>
+          <Text style={styles.clearButtonText}>Clear Chat</Text>
+        </TouchableOpacity>
       </View>
 
       {!chatStarted ? (
@@ -119,10 +224,20 @@ export default function ChatScreen() {
           </ScrollView>
 
           <View style={styles.inputContainer}>
-            <TextInput style={styles.textInput} placeholder="Send a message..." />
+            <TextInput
+              style={styles.textInput}
+              placeholder="Send a message..."
+              value={userMessage}
+              onChangeText={setUserMessage}
+              onSubmitEditing={sendMessage} // Optional: send on "Enter"
+              returnKeyType="send"
+            />
             {/* Send Button with Custom SVG */}
-            <TouchableOpacity style={styles.sendButton}>
+            <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
               <SendIcon width={24} height={24} /> 
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.sumButton} onPress={handleSummary}>
+              <Text style={styles.sumButtonText}>SUMMARY</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -134,13 +249,7 @@ export default function ChatScreen() {
           <View style={styles.exitConfirmBox}>
             <Text style={styles.confirmText}>Are you sure?</Text>
             <Text style={styles.confirmSubtext}>You will be redirected back to the homepage.</Text>
-            <TouchableOpacity
-              style={styles.confirmButton}
-              onPress={() => {
-                setShowExitConfirm(false); // 👈 reset before navigating
-                router.replace('/home');
-              }}
-            >
+            <TouchableOpacity style={styles.confirmButton} onPress={() => router.replace('/home')}>
               <Text style={styles.confirmButtonText}>Yes, I am sure</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.cancelButton} onPress={() => setShowExitConfirm(false)}>
@@ -194,6 +303,20 @@ const styles = StyleSheet.create({
     textAlign: "center",
     paddingBottom: 5,
   },
+
+  clearButton: {
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 8,
+    backgroundColor: "#FEE191", // Light yellow to match SUM
+    alignSelf: "flex-end"
+  },
+  
+  clearButtonText: {
+    fontSize: Typography.fontSize.small,
+    fontWeight: "600",
+    color: "#333333"
+  },  
 
   startChatContainer: {
     flex: 1,
@@ -293,12 +416,27 @@ const styles = StyleSheet.create({
     padding: 10,
     fontSize: Typography.fontSize.small,
     fontFamily: Typography.fontFamily.regular,
-    color: "#B9B9B9",   
+    color: "#333333",
   },
 
   sendButton: {
     padding: 10,
   },
+
+  sumButton: {
+    padding: 10,
+    marginLeft: 5,
+    backgroundColor: "#FFBE31",
+    borderRadius: 8,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  
+  sumButtonText: {
+    color: "#333333",
+    fontWeight: "600",
+    fontSize: 14,
+  }, 
 
   overlay: {
     position: 'absolute',
@@ -313,7 +451,6 @@ const styles = StyleSheet.create({
 
   exitConfirmBox: {
     width: '80%',
-    height: '40%',
     backgroundColor: '#F9F7F0',
     padding: 20,
     borderRadius: 50,

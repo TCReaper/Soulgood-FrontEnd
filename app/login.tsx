@@ -4,7 +4,6 @@ import { useRouter } from 'expo-router';
 import { Typography } from '@/constants/Typography';
 import UsernameIcon from '@/assets/icons/Username.svg';
 import PasswordIcon from '@/assets/icons/Password.svg';
-import GoogleIcon from '@/assets/icons/Google.svg';
 
 export default function LoginScreen() {
   const router = useRouter();
@@ -62,15 +61,6 @@ export default function LoginScreen() {
         <Text style={styles.forgotPassword}>Forgot password?</Text>
       </TouchableOpacity>
     </View>
-
-      <Text style={styles.orText}>or sign in with</Text>
-
-      <TouchableOpacity style={styles.googleButton}>    
-        <View style={styles.googleContainer}>  
-          <GoogleIcon width={24} height={24} style={styles.googleicon} />
-          <Text style={styles.googleText}>Sign in with Google</Text>
-        </View>
-      </TouchableOpacity>
 
       <Text style={styles.signupText}>
         Do not have an account?{"   "}

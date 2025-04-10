@@ -98,7 +98,7 @@ export default function HomeScreen() {
                 style={styles.menuButton}
                 onPress={() => {
                   setShowUserMenu(false);
-                  router.push({ pathname: '/AvatarBuilder', params: { redirectTo: '/(tabs)/home' } });
+                  router.push('/AvatarBuilder');
                 }}
               >
                 <Text style={styles.menuButtonText}>Change Avatar</Text>
@@ -107,9 +107,8 @@ export default function HomeScreen() {
                 style={styles.menuButton}
                 onPress={() => {
                   setShowUserMenu(false);
-                  router.push({
-                    pathname: '/',
-                  });
+                  useAvatarStore.getState().setUseAvatar(false);
+                  router.replace('/');
                 }}
               >
                 <Text style={styles.menuButtonText}>Logout</Text>

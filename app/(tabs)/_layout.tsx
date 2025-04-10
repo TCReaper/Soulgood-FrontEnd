@@ -74,6 +74,13 @@ export default function TabLayout() {
           tabBarIcon: ({ focused }) => <TabBarIcon Icon={ChatIcon} focused={focused} />,
         }}
       />
+      <Tabs.Screen
+        name="testpage"
+        options={{
+          tabBarLabel: 'Chat',
+          tabBarIcon: ({ focused }) => <TabBarIcon Icon={ChatIcon} focused={focused} />,
+        }}
+      />
     </Tabs>
   );
 }
