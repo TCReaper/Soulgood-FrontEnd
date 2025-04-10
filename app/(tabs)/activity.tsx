@@ -103,6 +103,14 @@ export default function ActivityPage() {
           </View>
         </TouchableOpacity>
       )}
+
+      {/* Debug API Button */}
+      <TouchableOpacity
+        style={styles.debugButton}
+        onPress={() => router.push('/testpage')}
+      >
+        <Text style={styles.debugButtonText}>Debug API</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -255,6 +263,25 @@ const styles = StyleSheet.create({
   },
   cancelText: {
     color: '#333333',
+    fontSize: Typography.fontSize.large,
+    fontFamily: Typography.fontFamily.bold,
+    textAlign: "center",
+  },
+  debugButton: {
+    position: 'absolute',
+    bottom: 80,
+    left: '50%',
+    transform: [{ translateX: -100 }],
+    backgroundColor: '#FFBE31',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 30,
+    width: 200,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  debugButtonText: {
+    color: '#FFF',
     fontSize: Typography.fontSize.large,
     fontFamily: Typography.fontFamily.bold,
     textAlign: "center",

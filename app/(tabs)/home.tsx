@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, ScrollView, Dimensions, Animated } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Typography } from '@/constants/Typography';
@@ -19,7 +19,16 @@ export default function HomeScreen() {
   const [activeIndex, setActiveIndex] = useState(0);
   const flatListRef = useRef<FlatList>(null);
   const [showUserMenu, setShowUserMenu] = useState(false);
-  
+   
+  const isTutorialCompleted = useTaskStore((state) => state.isTutorialCompleted);
+  const completeTutorial = useTaskStore((state) => state.completeTutorial);
+  useEffect(() => {
+    if (!isTutorialCompleted) {
+      completeTutorial();
+      router.replace("/tutorialhomescreen");
+    }
+  }, [isTutorialCompleted]);
+
   const isCheckInCompleted = useTaskStore((state) => state.isCheckInCompleted);
   const selections = useAvatarStore((state) => state.selections);
   const useAvatar = useAvatarStore((state) => state.useAvatar);  
@@ -98,7 +107,7 @@ export default function HomeScreen() {
                 style={styles.menuButton}
                 onPress={() => {
                   setShowUserMenu(false);
-                  router.push('/AvatarBuilder');
+                  router.push('/AvatarIntro');
                 }}
               >
                 <Text style={styles.menuButtonText}>Change Avatar</Text>
@@ -118,7 +127,7 @@ export default function HomeScreen() {
         </TouchableOpacity>
       )}
   
-      <ScrollView style={styles.container}>
+      <ScrollView style={styles.container}  contentContainerStyle={{ paddingBottom: 80 }}>
         <View style={styles.greetingContainer}>
           <Text style={styles.greeting}>Good Morning!</Text>
           <TouchableOpacity onPress={() => setShowUserMenu(true)}>
@@ -223,6 +232,7 @@ export default function HomeScreen() {
           )}
           keyExtractor={(item) => item.id}
           showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: 30 }} 
         />
       </ScrollView>
     </View>

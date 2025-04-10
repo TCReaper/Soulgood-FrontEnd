@@ -39,7 +39,7 @@ export default function ChatScreen() {
         { id: 2, text: "Choose a topic you would like to ask about:", sender: "bot", isTopicSelection: true }
       ]);
       setIsTyping(false);
-    }, 1500);
+    }, 500);
   };
 
   // Function to select and send topic - Updated on 7 Apr
@@ -62,12 +62,12 @@ export default function ChatScreen() {
       let botResponse = "";
   
       if (topic === "Review Your PHQ-9 Assessment") {
-        const response = await axios.post("http://127.0.0.1:8081/phq", {
+        const response = await axios.post("http://192.168.88.2:5051/phq", {
           messages: formattedMessages
         });
         botResponse = response.data.phq_response;
       } else {
-        const response = await axios.post("http://127.0.0.1:8081/chat", {
+        const response = await axios.post("http://192.168.88.2:5051/chat", {
           messages: formattedMessages
         });
         botResponse = response.data.response;
@@ -105,7 +105,7 @@ export default function ChatScreen() {
         content: msg.text
       }));
   
-      const response = await axios.post("http://127.0.0.1:8081/chat", {
+      const response = await axios.post("http://192.168.88.2:5051/chat", {
         messages: formattedMessages
       });
   
@@ -130,7 +130,7 @@ export default function ChatScreen() {
   const handleSummary = async () => {
     setIsTyping(true);
     try {
-      const response = await axios.post("http://127.0.0.1:5000/summary", {
+      const response = await axios.post("http://192.168.88.2:5051/summary", {
         messages: messages.map(msg => ({ role: msg.sender === "user" ? "user" : "assistant", content: msg.text }))
       });
   
@@ -231,6 +231,7 @@ export default function ChatScreen() {
               onChangeText={setUserMessage}
               onSubmitEditing={sendMessage} // Optional: send on "Enter"
               returnKeyType="send"
+              contentContainerStyle={{ paddingBottom: 100 }}
             />
             {/* Send Button with Custom SVG */}
             <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
@@ -245,7 +246,11 @@ export default function ChatScreen() {
 
       {/* Fix: Moved the exit confirmation outside of the chat container */}
       {showExitConfirm && (
-        <TouchableOpacity style={styles.overlay} activeOpacity={1} onPress={() => setShowExitConfirm(false)}>
+        <TouchableOpacity
+        style={styles.overlay}
+        activeOpacity={1}
+        onPress={() => setShowExitConfirm(false)}
+        >
           <View style={styles.exitConfirmBox}>
             <Text style={styles.confirmText}>Are you sure?</Text>
             <Text style={styles.confirmSubtext}>You will be redirected back to the homepage.</Text>
@@ -409,6 +414,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderTopWidth: 1,
     borderColor: "#CCC",
+    paddingBottom: 90
   },
 
   textInput: {

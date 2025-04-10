@@ -10,7 +10,7 @@ export default function SignUpScreen() {
   const router = useRouter();
 
   const handleCreate = () => {
-    router.push('/AvatarIntro'); 
+    router.replace('/home'); 
   };
 
   return (

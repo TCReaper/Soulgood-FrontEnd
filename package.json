@@ -3,15 +3,16 @@
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
-    "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
     "test": "jest --watchAll",
     "lint": "expo lint",
-    "dev": "concurrently \"npm start\" \"npm run flask\"",
-    "flask": "cd backend && python chatbot.py"
+    "dev": "concurrently \"npm run flask\" \"npm run flaskapp\" \"npm start\"",
+    "start": "expo start",
+    "flask": "cd backend && python chatbot.py",
+    "flaskapp": "cd backend && python app.py"
   },
   "jest": {
     "preset": "jest-expo"

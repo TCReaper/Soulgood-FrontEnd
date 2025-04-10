@@ -10,7 +10,7 @@ def init_db():
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
-    print("🔍 Initializing database...")
+    print("Initializing database...")
 
     # ✅ Create Users Table (Updated Schema)
     cursor.execute("""
@@ -64,7 +64,7 @@ def init_db():
 
     conn.commit()
     conn.close()
-    print("✅ Database initialized successfully!")
+    print("Database initialized successfully!")
 
 
 def check_and_update_db():
@@ -72,14 +72,14 @@ def check_and_update_db():
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
-    print("🔍 Checking database schema...")
+    print("Checking database schema...")
 
     # Check columns in the users table
     cursor.execute("PRAGMA table_info(users)")
     user_columns = [column[1] for column in cursor.fetchall()]
 
     if "username" in user_columns:
-        print("⚠️ Removing old 'username' column and updating to 'name' and 'email'...")
+        print("Removing old 'username' column and updating to 'name' and 'email'...")
         cursor.execute("ALTER TABLE users RENAME TO users_old")
 
         cursor.execute("""
@@ -99,7 +99,7 @@ def check_and_update_db():
 
         cursor.execute("DROP TABLE users_old")
         conn.commit()
-        print("✅ Users table updated!")
+        print("Users table updated!")
 
     # Check columns in heart_rate_records table
     cursor.execute("PRAGMA table_info(heart_rate_records)")
@@ -107,7 +107,7 @@ def check_and_update_db():
 
     # ✅ Remove 'bpm' column if it exists
     if "bpm" in columns:
-        print("⚠️ Removing unused 'bpm' column...")
+        print("Removing unused 'bpm' column...")
         cursor.execute("""
             CREATE TABLE heart_rate_records_new AS
             SELECT id, user_id, device, timestamp, entry_date, stress_risk, processed_features, stress_predictions
@@ -116,17 +116,17 @@ def check_and_update_db():
         cursor.execute("DROP TABLE heart_rate_records")
         cursor.execute("ALTER TABLE heart_rate_records_new RENAME TO heart_rate_records")
         conn.commit()
-        print("✅ 'bpm' column removed!")
+        print("'bpm' column removed!")
 
     # ✅ Ensure 'entry_date' column exists
     if "entry_date" not in columns:
-        print("⚠️ Missing 'entry_date' column! Updating database schema...")
+        print("Missing 'entry_date' column! Updating database schema...")
         cursor.execute("ALTER TABLE heart_rate_records ADD COLUMN entry_date DATETIME DEFAULT CURRENT_TIMESTAMP")
         conn.commit()
-        print("✅ Database schema updated!")
+        print("Database schema updated!")
 
     conn.close()
-    print("✅ Database check complete.")
+    print("Database check complete.")
 
 
 def save_heart_rate_data(user_id, device, timestamp, stress_risk, processed_features, stress_predictions):
@@ -144,7 +144,7 @@ def save_heart_rate_data(user_id, device, timestamp, stress_risk, processed_feat
         conn.close()
         return True
     except Exception as e:
-        print(f"❌ Database error: {e}")
+        print(f"Database error: {e}")
         return False
 
 
@@ -153,7 +153,7 @@ def get_latest_heart_rate():
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     
-    print("🔍 Fetching the latest heart rate record...")
+    print("Fetching the latest heart rate record...")
     cursor.execute("""
     SELECT * FROM heart_rate_records ORDER BY timestamp DESC LIMIT 1
     """)
@@ -161,9 +161,9 @@ def get_latest_heart_rate():
     conn.close()
 
     if record:
-        print(f"✅ Latest Record: {record}")
+        print(f"Latest Record: {record}")
     else:
-        print("⚠️ No records found!")
+        print("No records found!")
 
     return record
 

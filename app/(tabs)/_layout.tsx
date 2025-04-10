@@ -22,9 +22,9 @@ export default function TabLayout() {
           left: 0,
           right: 0,
           backgroundColor: '#FDFBF5',
-          borderTopLeftRadius: 20,
-          borderTopRightRadius: 20,
-          height: 100,
+          borderTopLeftRadius: 0,
+          borderTopRightRadius: 0,
+          height: 65,
           shadowColor: '#000',
           shadowOffset: { width: 0, height: -4 },
           shadowOpacity: 0.1,
@@ -69,13 +69,6 @@ export default function TabLayout() {
       />
       <Tabs.Screen
         name="chat"
-        options={{
-          tabBarLabel: 'Chat',
-          tabBarIcon: ({ focused }) => <TabBarIcon Icon={ChatIcon} focused={focused} />,
-        }}
-      />
-      <Tabs.Screen
-        name="testpage"
         options={{
           tabBarLabel: 'Chat',
           tabBarIcon: ({ focused }) => <TabBarIcon Icon={ChatIcon} focused={focused} />,

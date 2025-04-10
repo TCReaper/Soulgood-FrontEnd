@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from dotenv import load_dotenv
 import os
+from openai import OpenAI
 import openai
 import time
 
@@ -70,10 +71,10 @@ Personalization
 @app.route("/chat", methods=["POST"])
 def chat():
     data = request.json
-    user_messages = data.get("messages", [])
+    user_messages = data.get("messages", "")
 
     if not user_messages:
-        return jsonify({"error": "Conversation history is required"}), 400
+        return jsonify({"error": "Message is required"}), 400
 
     # Add system prompt at the beginning of the message list
     messages = [{"role": "system", "content": SYSTEM_PROMPT}] + user_messages
@@ -196,4 +197,4 @@ def home():
 
 # ------------------ Run Server ------------------
 if __name__ == "__main__":
-    app.run(port=8081, debug=True)
+    app.run(host="0.0.0.0", port=5051, debug=True)

@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
-from flask_cors import CORS
 import pandas as pd
+from flask_cors import CORS
 from hrv_analyzer import HRVAnalyzer  
 from database import save_heart_rate_data  # ✅ Import database function
 import sqlite3  # ✅ Add this line
@@ -395,4 +395,4 @@ def get_latest_heart_rate():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5050, threaded=True)
+    app.run(debug=True, host='0.0.0.0', port=5050)

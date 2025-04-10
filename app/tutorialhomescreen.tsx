@@ -15,16 +15,16 @@ export default function TutorialHomeScreen() {
       text: "This section shows your weekly heart rate statistics.",
       tooltipPosition: { bottom: 280 },
       overlays: {
-        top: { height: height * 0.19 },
-        bottom: { top: height * 0.47 },
+        top: { height: height * 0.24 },
+        bottom: { top: height * 0.44 },
       },
     },
     {
       text: "Here is your pending task. \n Tap this in the real app to complete check-ins.",
-      tooltipPosition: { bottom: 140 },
+      tooltipPosition: { bottom: 130 },
       overlays: {
-        top: { height: height * 0.47 },
-        bottom: { top: height * 0.61 },
+        top: { height: height * 0.48 },
+        bottom: { top: height * 0.62 },
       },
     },
     {

@@ -36,7 +36,7 @@ export default function AvatarBuilder() {
   const handleDone = () => {
     useAvatarStore.getState().setSelections(selections);
     useAvatarStore.getState().setUseAvatar(true); // ✅ user has completed avatar
-    router.replace(typeof redirectTo === 'string' ? redirectTo : '/(tabs)/tutorialhomescreen');
+    router.replace(typeof redirectTo === 'string' ? redirectTo : '/home');
   };
   
 
@@ -229,7 +229,7 @@ export default function AvatarBuilder() {
         <TouchableOpacity
           onPress={() => {
             useAvatarStore.getState().setUseAvatar(false);
-            router.replace('/(tabs)/tutorialhomescreen');
+            router.replace('/home');
           }}
         >
           <Text style={styles.navText}>Skip</Text>

@@ -52,6 +52,7 @@ export default function MusicPage() {
         )}
         showsVerticalScrollIndicator={false} // Hide scrollbar
         overScrollMode="never"
+        contentContainerStyle={{ paddingBottom: 100 }}
       />
 
       {/* Exit Confirmation Popup with Dark Overlay */}

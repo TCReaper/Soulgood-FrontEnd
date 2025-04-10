@@ -12,7 +12,7 @@ export default function LoginScreen() {
   const [error, setError] = useState('');
 
   const handleLogin = () => {
-    if (username === 'test' && password === 'test') {
+    if ((username === 'test' && password === 'test') || (username === 'John' && password === 'test')) {
       setError('');
       router.replace('/home'); // Navigate to home screen
     } else {
@@ -64,7 +64,7 @@ export default function LoginScreen() {
 
       <Text style={styles.signupText}>
         Do not have an account?{"   "}
-        <Text style={styles.signupLink} onPress={() => router.push('/signup')}>
+        <Text style={styles.signupLink} onPress={() => router.replace('/signup')}>
           Sign up here!
         </Text>
       </Text>

@@ -44,20 +44,8 @@ class HRVAnalyzer:
         self.resample_interval = resample_interval
         self.spotify = None
 
-    # def preprocess_hrv_data(self, hr_data):
-    #     print("data received to preprocess")
-    #     hr_data['dt'] = pd.to_datetime(hr_data['dt'])
-    #     hr_data = hr_data.sort_values('dt').set_index('dt')
-    #     hr_data = hr_data.resample(self.resample_interval).mean()
-    #     hr_data['bpm'] = hr_data['bpm'].interpolate(method='linear')
-    #     hr_data['SDNN'] = hr_data['bpm'].rolling(window=5).std()
-    #     hr_data['RMSSD'] = np.sqrt(np.square(hr_data['bpm'].diff()).rolling(window=5).mean())
-    #     rr_intervals = hr_data['bpm'].dropna().values
-    #     hr_data['LF_Power'], hr_data['HF_Power'], hr_data['LF/HF'] = self.calculate_frequency_features(rr_intervals)
-    #     return hr_data.dropna()
-
-    def preprocess_hrv_data(self, file_path):
-        hr_data = pd.read_csv(file_path)
+    def preprocess_hrv_data(self, hr_data):
+        print("data received to preprocess")
         hr_data['dt'] = pd.to_datetime(hr_data['dt'])
         hr_data = hr_data.sort_values('dt').set_index('dt')
         hr_data = hr_data.resample(self.resample_interval).mean()
@@ -67,6 +55,18 @@ class HRVAnalyzer:
         rr_intervals = hr_data['bpm'].dropna().values
         hr_data['LF_Power'], hr_data['HF_Power'], hr_data['LF/HF'] = self.calculate_frequency_features(rr_intervals)
         return hr_data.dropna()
+
+    # def preprocess_hrv_data(self, file_path):
+    #     hr_data = pd.read_csv(file_path)
+    #     hr_data['dt'] = pd.to_datetime(hr_data['dt'])
+    #     hr_data = hr_data.sort_values('dt').set_index('dt')
+    #     hr_data = hr_data.resample(self.resample_interval).mean()
+    #     hr_data['bpm'] = hr_data['bpm'].interpolate(method='linear')
+    #     hr_data['SDNN'] = hr_data['bpm'].rolling(window=5).std()
+    #     hr_data['RMSSD'] = np.sqrt(np.square(hr_data['bpm'].diff()).rolling(window=5).mean())
+    #     rr_intervals = hr_data['bpm'].dropna().values
+    #     hr_data['LF_Power'], hr_data['HF_Power'], hr_data['LF/HF'] = self.calculate_frequency_features(rr_intervals)
+    #     return hr_data.dropna()
 
     def calculate_frequency_features(self, rr_intervals):
         if len(rr_intervals) < 10:
