@@ -44,20 +44,8 @@ class HRVAnalyzer:
         self.resample_interval = resample_interval
         self.spotify = None
 
-    def preprocess_hrv_data(self, hr_data):
-        print("data received to preprocess")
-        hr_data['dt'] = pd.to_datetime(hr_data['dt'])
-        hr_data = hr_data.sort_values('dt').set_index('dt')
-        hr_data = hr_data.resample(self.resample_interval).mean()
-        hr_data['bpm'] = hr_data['bpm'].interpolate(method='linear')
-        hr_data['SDNN'] = hr_data['bpm'].rolling(window=5).std()
-        hr_data['RMSSD'] = np.sqrt(np.square(hr_data['bpm'].diff()).rolling(window=5).mean())
-        rr_intervals = hr_data['bpm'].dropna().values
-        hr_data['LF_Power'], hr_data['HF_Power'], hr_data['LF/HF'] = self.calculate_frequency_features(rr_intervals)
-        return hr_data.dropna()
-
-    # def preprocess_hrv_data(self, file_path):
-    #     hr_data = pd.read_csv(file_path)
+    # def preprocess_hrv_data(self, hr_data):
+    #     print("data received to preprocess")
     #     hr_data['dt'] = pd.to_datetime(hr_data['dt'])
     #     hr_data = hr_data.sort_values('dt').set_index('dt')
     #     hr_data = hr_data.resample(self.resample_interval).mean()
@@ -67,6 +55,18 @@ class HRVAnalyzer:
     #     rr_intervals = hr_data['bpm'].dropna().values
     #     hr_data['LF_Power'], hr_data['HF_Power'], hr_data['LF/HF'] = self.calculate_frequency_features(rr_intervals)
     #     return hr_data.dropna()
+
+    def preprocess_hrv_data(self, file_path):
+        hr_data = pd.read_csv(file_path)
+        hr_data['dt'] = pd.to_datetime(hr_data['dt'])
+        hr_data = hr_data.sort_values('dt').set_index('dt')
+        hr_data = hr_data.resample(self.resample_interval).mean()
+        hr_data['bpm'] = hr_data['bpm'].interpolate(method='linear')
+        hr_data['SDNN'] = hr_data['bpm'].rolling(window=5).std()
+        hr_data['RMSSD'] = np.sqrt(np.square(hr_data['bpm'].diff()).rolling(window=5).mean())
+        rr_intervals = hr_data['bpm'].dropna().values
+        hr_data['LF_Power'], hr_data['HF_Power'], hr_data['LF/HF'] = self.calculate_frequency_features(rr_intervals)
+        return hr_data.dropna()
 
     def calculate_frequency_features(self, rr_intervals):
         if len(rr_intervals) < 10:
@@ -105,7 +105,7 @@ class HRVAnalyzer:
         print(user_message)
         load_dotenv()
         OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-        openai.api_key = OPENAI_API_KEY
+        client = openai.OpenAI(api_key=OPENAI_API_KEY)
         music_mapping = {
                 "min_tempo": 40, "max_tempo": 70,
                 "min_energy": 0.2, "max_energy": 0.5,
@@ -127,8 +127,8 @@ Your links should exist and work. Web scrape if needed
         {"role": "user", "content": user_message}]
         while True: #for n_iter in range(3):
             try:
-                response = openai.ChatCompletion.create(
-                    model="gpt-4o",
+                response = client.chat.completions.create(
+                    model="chatgpt-4o-latest",
                     messages=messages,
                     max_tokens=500
                 )

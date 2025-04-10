@@ -13,7 +13,7 @@ load_dotenv()
 
 # OpenAI API Key
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-openai.api_key = OPENAI_API_KEY
+client = openai.OpenAI(api_key=OPENAI_API_KEY)
 
 # Retrieve User information - to become dynamic by retrieving front-end
 Nickname = "John"
@@ -60,6 +60,7 @@ Ensuring a Natural Flow:
 - If a user expresses frustration, remain patient and understanding.
 - Tailor responses based on the user’s mood and needs to ensure they feel supported.
 - As much as possible, respond to the user's input and make them feel heard.
+- Share up to 3 pointers at any time
 
 Personalization
 - Always use their {Nickname}
@@ -69,20 +70,19 @@ Personalization
 @app.route("/chat", methods=["POST"])
 def chat():
     data = request.json
-    user_message = data.get("message", "")
-    if not user_message:
-        return jsonify({"error": "Message is required"}), 400
+    user_messages = data.get("messages", [])
 
-    messages = [
-        {"role": "system", "content": SYSTEM_PROMPT},
-        {"role": "user", "content": user_message}
-    ]
+    if not user_messages:
+        return jsonify({"error": "Conversation history is required"}), 400
+
+    # Add system prompt at the beginning of the message list
+    messages = [{"role": "system", "content": SYSTEM_PROMPT}] + user_messages
 
     try:
-        response = openai.ChatCompletion.create(
-            model="gpt-4o",
+        response = client.chat.completions.create(
+            model="chatgpt-4o-latest",
             messages=messages,
-            max_tokens=700,
+            max_tokens=500,
             temperature=0.7
         )
         bot_reply = response.choices[0].message.content
@@ -95,9 +95,9 @@ def chat():
 def query_openai_api(messages, max_retries=3, delay=10):
     for attempt in range(max_retries):
         try:
-            response = openai.ChatCompletion.create(
+            response = client.chat.completions.create(
                 #model="gpt-3.5-turbo-0125",
-                model="gpt-4o",
+                model="chatgpt-4o-latest",
                 messages=messages,
                 max_tokens=800,
                 temperature=0.7
@@ -196,4 +196,4 @@ def home():
 
 # ------------------ Run Server ------------------
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(port=8081, debug=True)

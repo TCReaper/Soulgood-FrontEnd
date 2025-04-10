@@ -62,12 +62,12 @@ export default function ChatScreen() {
       let botResponse = "";
   
       if (topic === "Review Your PHQ-9 Assessment") {
-        const response = await axios.post("http://127.0.0.1:5000/phq", {
+        const response = await axios.post("http://127.0.0.1:8081/phq", {
           messages: formattedMessages
         });
         botResponse = response.data.phq_response;
       } else {
-        const response = await axios.post("http://127.0.0.1:5000/chat", {
+        const response = await axios.post("http://127.0.0.1:8081/chat", {
           messages: formattedMessages
         });
         botResponse = response.data.response;
@@ -105,7 +105,7 @@ export default function ChatScreen() {
         content: msg.text
       }));
   
-      const response = await axios.post("http://127.0.0.1:5000/chat", {
+      const response = await axios.post("http://127.0.0.1:8081/chat", {
         messages: formattedMessages
       });
   
