@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     marginBottom:20,
     width: '90%', 
-    height: '8%',
+    height: 60,
   },
   icon: {
     marginLeft: 20,
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   },
   createButton: {
     width: '90%',
-    height: '8%',
+    height: 60,
     borderRadius: 30,
     backgroundColor: '#FFA500',
     justifyContent: 'center',
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
   },
   googleButton: {
     width: '90%',
-    height: '8%',
+    height: 60,
     borderWidth: 1,
     borderColor: '#DDD',
     justifyContent: 'center',

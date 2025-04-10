@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     marginBottom:20,
     width: '90%', 
-    height: '8%',
+    height: 60,
   },
   icon: {
     marginLeft:20,
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
   },
   loginButton: {
     width: '90%',
-    height: '8%',
+    height: 60,
     backgroundColor: '#FFAE00',
     justifyContent: 'center',
     alignItems: 'center',
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
   },
   googleButton: {
     width: '90%',
-    height: '8%',
+    height: 60,
     backgroundColor: '#D9D9D9',
     justifyContent: 'center',
     alignItems: 'center',
