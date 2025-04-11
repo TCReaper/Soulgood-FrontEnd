@@ -62,12 +62,12 @@ export default function ChatScreen() {
       let botResponse = "";
   
       if (topic === "Review Your PHQ-9 Assessment") {
-        const response = await axios.post("http://192.168.88.2:5051/phq", {
+        const response = await axios.post("http://10.46.79.241:5051/phq", {
           messages: formattedMessages
         });
         botResponse = response.data.phq_response;
       } else {
-        const response = await axios.post("http://192.168.88.2:5051/chat", {
+        const response = await axios.post("http://10.46.79.241:5051/chat", {
           messages: formattedMessages
         });
         botResponse = response.data.response;
@@ -105,7 +105,7 @@ export default function ChatScreen() {
         content: msg.text
       }));
   
-      const response = await axios.post("http://192.168.88.2:5051/chat", {
+      const response = await axios.post("http://10.46.79.241:5051/chat", {
         messages: formattedMessages
       });
   
@@ -130,7 +130,7 @@ export default function ChatScreen() {
   const handleSummary = async () => {
     setIsTyping(true);
     try {
-      const response = await axios.post("http://192.168.88.2:5051/summary", {
+      const response = await axios.post("http://10.46.79.241:5051/summary", {
         messages: messages.map(msg => ({ role: msg.sender === "user" ? "user" : "assistant", content: msg.text }))
       });
   

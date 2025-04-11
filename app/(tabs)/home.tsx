@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, ScrollView, Dimensions, Animated } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Linking, FlatList, ScrollView, Dimensions, Animated } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Typography } from '@/constants/Typography';
 import { useAvatarStore } from '@/stores/avatarStore';
@@ -78,18 +78,21 @@ export default function HomeScreen() {
       title: 'How to sleep better?',
       icon: <Article1Icon width={100} height={100} />,
       backgroundColor: '#FFEFE7', // light peach
+      url: 'https://www.healthline.com/nutrition/17-tips-to-sleep-better'
     },
     {
       id: '2',
       title: 'What are signs of depression?',
       icon: <Article2Icon width={100} height={100} />,
       backgroundColor: '#E9EDFF', // light purple
+      url: 'https://www.healthhub.sg/live-healthy/how-to-identify-and-deal-with-depression'
     },
     {
       id: '3',
       title: 'How to manage stress?',
       icon: <Article3Icon width={100} height={100} />,
       backgroundColor: '#E9FFE9', // light green
+      url: 'https://www.healthhub.sg/programmes/mindsg/caring-for-ourselves/coping-with-stress-adults'
     },
   ];  
 
@@ -223,12 +226,14 @@ export default function HomeScreen() {
           data={articleData}
           horizontal
           renderItem={({ item }) => (
-            <View style={[styles.articleCard, { backgroundColor: item.backgroundColor }]}>
-              <Text style={styles.articleTitle}>{item.title}</Text>
-              <View style={styles.articleIconContainer}>
-                {item.icon}
+            <TouchableOpacity onPress={() => Linking.openURL(item.url)}>
+              <View style={[styles.articleCard, { backgroundColor: item.backgroundColor }]}>
+                <Text style={styles.articleTitle}>{item.title}</Text>
+                <View style={styles.articleIconContainer}>
+                  {item.icon}
+                </View>
               </View>
-            </View>
+            </TouchableOpacity>
           )}
           keyExtractor={(item) => item.id}
           showsHorizontalScrollIndicator={false}

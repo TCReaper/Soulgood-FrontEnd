@@ -86,7 +86,7 @@ export default function ReachOut() {
       <TouchableOpacity style={styles.overlay} activeOpacity={1} onPress={() => setWebsiteToOpen(null)}>
         <View style={styles.exitConfirmBox}>
           <Text style={styles.confirmText}>Are you sure?</Text>
-          <Text style={styles.confirmSubtext}>You will be redirected to Safari to view the website.</Text>
+          <Text style={styles.confirmSubtext}>You will be redirected to the website.</Text>
           <TouchableOpacity
             style={styles.confirmButton}
             onPress={() => {
@@ -94,7 +94,7 @@ export default function ReachOut() {
               setWebsiteToOpen(null);
             }}
           >
-            <Text style={styles.confirmButtonText}>Yes, open in Safari</Text>
+            <Text style={styles.confirmButtonText}>Yes, open the website</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.cancelButton} onPress={() => setWebsiteToOpen(null)}>
             <Text style={styles.cancelText}>Close</Text>

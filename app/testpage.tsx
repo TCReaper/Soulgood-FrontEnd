@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, TextInput, Button, StyleSheet } from 'react-native';
 import BackIcon from '@/assets/icons/Back.svg';
 
-const API_BASE_URL = "http://127.0.0.1:5050"; // Replace with your base URL
+const API_BASE_URL = "http://ec2-54-208-21-244.compute-1.amazonaws.com/"; // Replace with your base URL
 
 const TestPage: React.FC = () => {
   const [responseMessage, setResponseMessage] = useState('');
@@ -19,7 +19,7 @@ const TestPage: React.FC = () => {
 
   const handleSignup = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:5050/signup`, {
+      const response = await fetch(`${API_BASE_URL}signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, password }),
@@ -147,7 +147,8 @@ const TestPage: React.FC = () => {
             title="Get User Profile"
             onPress={async () => {
               try {
-                const response = await fetch(`http://127.0.0.1:5050/user/${userId}`);
+                // const response = await fetch(`${API_BASE_URL}${userId}`);
+                const response = await fetch(`${API_BASE_URL}user/0`);
                 const data = await response.json();
                 setResponseMessage(data.message || 'User data retrieved');
               } catch (error) {
