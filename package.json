@@ -10,6 +10,7 @@
     "test": "jest --watchAll",
     "lint": "expo lint",
     "dev": "concurrently \"npm run flask\" \"npm run flaskapp\" \"npm start\"",
+    "server": "concurrently \"npm run flaskapp\" \"npm run flask\"",
     "start": "expo start",
     "flask": "cd backend && python chatbot.py",
     "flaskapp": "cd backend && python app.py"
